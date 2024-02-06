@@ -41,7 +41,7 @@ def leaderboard_response(json, points = "MMR")
     OUTPUT
 end
 
-bot.command :leaderboard do |event|
+bot.command :leaderboard, description: "Returns the top 10 players on the 1v1 ranked ladder (by mmr)" do |event|
     json = get_leaderboard(count: 10, page: 1, order: :mmr)
 
     leaderboard_response(json)
@@ -70,7 +70,7 @@ def build_player_embed(name, match)
     )
 end
 
-bot.command :search do |event, *args|
+bot.command :search, description: "Show details of a player on the 1v1 ranked ladder" do |event, *args|
     json = get_leaderboard(count: 1, page: 1, order: :mmr, query: args.join(' '))
 
     match = json["entries"].first
@@ -89,7 +89,7 @@ bot.command :search do |event, *args|
     end
 end
 
-bot.command :around do |event, *args|
+bot.command :around, description: "Return the page that the given rank falls on" do |event, *args|
     if args.length < 1 
         return "Please enter a rank to search around"
     end
