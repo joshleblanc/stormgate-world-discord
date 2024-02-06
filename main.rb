@@ -42,7 +42,7 @@ def build_player_embed(name, match)
     fields << EmbedField.new(name: "Losses", value: match["losses"].to_s, inline: true)
     fields << EmbedField.new(name: "Ties", value: match["ties"].to_s, inline: true)
     fields << EmbedField.new(name: "League", value: "#{match["league"]} #{match["tier"]}", inline: true)
-    fields << EmbedField.new(name: "Win Rate", value: "#{match["win_rate"].to_s}%", inline: true)
+    fields << EmbedField.new(name: "Win Rate", value: "#{'%.2f' % match["win_rate"]}%", inline: true)
     thumbnail_url = if match["race"] == "vanguard" 
         VG_URL
     else
