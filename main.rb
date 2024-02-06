@@ -37,7 +37,7 @@ def build_player_embed(name, match)
     fields = []
     fields << EmbedField.new(name: "Rank", value: match["rank"].to_s, inline: true)
     fields << EmbedField.new(name: "MMR", value: match["mmr"].floor.to_s, inline: true)
-    fields << EmbedField.new(name: "Points", value: match["points"].floor.to_s, inline: true)
+    fields << EmbedField.new(name: "Points", value: match["points"].to_i.floor.to_s, inline: true)
     fields << EmbedField.new(name: "Wins", value: match["wins"].to_s, inline: true)
     fields << EmbedField.new(name: "Losses", value: match["losses"].to_s, inline: true)
     fields << EmbedField.new(name: "Ties", value: match["ties"].to_s, inline: true)
