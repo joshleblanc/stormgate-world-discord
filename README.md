@@ -1,6 +1,6 @@
 A very simple discord bot to query the stormgate api.
 
-[Click Here to invite to your server](https://discord.com/oauth2/authorize?&client_id=1204440376262398002&scope=bot)
+[Click Here](https://discord.com/oauth2/authorize?&client_id=1204440376262398002&scope=bot) to invite to your server
 
 **Leaderboard**
 
