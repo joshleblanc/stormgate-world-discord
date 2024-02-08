@@ -14,7 +14,7 @@ module Commands
                 return "Please enter a positive rank"
             end
 
-            page = (rank / 10).floor + 1
+            page = (rank / 10.to_f).ceil
 
             data = leaderboard_response(get_leaderboard(page: page, count: 10, order: :points), "Points")
 
