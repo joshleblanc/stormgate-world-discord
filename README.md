@@ -16,3 +16,7 @@ A very simple discord bot to query the stormgate api.
 **Around**
 
 !!around <rank> will return the page the rank is on
+
+**Last**
+
+!!last <query> will return the last match for the closest matching player

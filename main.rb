@@ -1,47 +1,27 @@
 require 'discordrb'
 require 'dotenv/load'
 require 'faraday'
+require 'active_support/inflector'
+require 'active_support/deprecator'
+require 'active_support/deprecation'
+require 'active_support/duration'
+require_relative 'utilities/helpers'
+require_relative 'commands/last_command'
 
-include Discordrb::Webhooks
+include Utilities::Helpers
 
 INF_URL = "https://stormgateworld.com/_astro/infernals-small-glow.jbWP777a.png"
 VG_URL = "https://stormgateworld.com/_astro/vanguard-small-glow.NsCUjSZx.png"
 URL = "https://api.stormgateworld.com/v0"
 
-bot = Discordrb::Commands::CommandBot.new token: ENV.fetch("TOKEN"), client_id: ENV.fetch("CLIENT_ID"), prefix: ENV.fetch("PREFIX"), intents: [:server_messages]
-puts "This bot's invite URL is #{bot.invite_url}"
+BOT = Discordrb::Commands::CommandBot.new token: ENV.fetch("TOKEN"), client_id: ENV.fetch("CLIENT_ID"), prefix: ENV.fetch("PREFIX"), intents: [:server_messages]
+puts "This bot's invite URL is #{BOT.invite_url}"
 puts 'Click on it to invite it to your server.'
 
 
-def get_leaderboard(**kwargs)
-    query = ""
+BOT.include! Commands::LastCommand
 
-    query = kwargs.map do |key, value|
-        "#{key}=#{value}"
-    end.join("&")
-
-    response = Faraday.get("#{URL}/leaderboards/ranked_1v1?#{query}")
-    JSON.parse(response.body)
-end
-
-def leaderboard_response(json, points = "MMR")
-    resp = [["Rank", "Race", "Name", points]]
-    json["entries"].each do |entry|
-        resp << [entry["rank"], entry["race"][0].upcase, entry["nickname"], entry["mmr"].floor]
-    end
-
-    resp.map! do |entry|
-        [entry[0].to_s.rjust(4, "0"), entry[1].ljust(4, " "), entry[2].ljust(20, " "), entry[3]].join("\t")
-    end
-
-    <<~OUTPUT
-        ```
-        #{resp.join("\n")}
-        ```
-    OUTPUT
-end
-
-bot.command :leaderboard, description: "Returns the top 10 players on the 1v1 ranked ladder (by mmr)" do |event|
+BOT.command :leaderboard, description: "Returns the top 10 players on the 1v1 ranked ladder (by mmr)" do |event|
     json = get_leaderboard(count: 10, page: 1, order: :mmr)
 
     leaderboard_response(json)
@@ -70,26 +50,22 @@ def build_player_embed(name, match)
     )
 end
 
-bot.command :search, description: "Show details of a player on the 1v1 ranked ladder" do |event, *args|
-    json = get_leaderboard(count: 1, page: 1, order: :mmr, query: args.join(' '))
+BOT.command :search, description: "Show details of a player on the 1v1 ranked ladder" do |event, *args|
+    match = find_player(args.join(' '))
 
-    match = json["entries"].first
+    return "Could not find player named #{args.join(' ')}" unless match
 
-    if match 
-        response = Faraday.get("#{URL}/players/#{match["player_id"]}")
-        json = JSON.parse(response.body)
-    
-        json["leaderboard_entries"].each do 
-            event.respond nil, nil, build_player_embed(match["nickname"], _1)
-        end
+    response = Faraday.get("#{URL}/players/#{match["player_id"]}")
+    json = JSON.parse(response.body)
 
-        nil
-    else 
-        "Couldn't find a player named #{args.join(" ")}"
+    json["leaderboard_entries"].each do 
+        event.respond nil, nil, build_player_embed(match["nickname"], _1)
     end
+
+    nil
 end
 
-bot.command :around, description: "Return the page that the given rank falls on" do |event, *args|
+BOT.command :around, description: "Return the page that the given rank falls on" do |event, *args|
     if args.length < 1 
         return "Please enter a rank to search around"
     end
@@ -110,4 +86,4 @@ bot.command :around, description: "Return the page that the given rank falls on"
     data
 end
 
-bot.run
+BOT.run
