@@ -11,7 +11,7 @@ module Commands
             fields << EmbedField.new(name: "Wins", value: match["wins"].to_s, inline: true)
             fields << EmbedField.new(name: "Losses", value: match["losses"].to_s, inline: true)
             fields << EmbedField.new(name: "Ties", value: match["ties"].to_s, inline: true)
-            fields << EmbedField.new(name: "League", value: "#{match["league"]} #{match["tier"]}", inline: true)
+            fields << EmbedField.new(name: "League", value: "#{match["league"].titleize} #{match["tier"]}", inline: true)
             fields << EmbedField.new(name: "Win Rate", value: "#{'%.2f' % match["win_rate"]}%", inline: true)
             thumbnail_url = if match["race"] == "vanguard" 
                 VG_URL
