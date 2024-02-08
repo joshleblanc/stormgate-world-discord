@@ -7,6 +7,7 @@ require 'active_support/deprecation'
 require 'active_support/duration'
 require_relative 'utilities/helpers'
 require_relative 'commands/last_command'
+require_relative 'commands/search_command'
 
 include Utilities::Helpers
 
@@ -20,6 +21,7 @@ puts 'Click on it to invite it to your server.'
 
 
 BOT.include! Commands::LastCommand
+BOT.include! Commands::SearchCommand
 
 BOT.command :leaderboard, description: "Returns the top 10 players on the 1v1 ranked ladder (by mmr)" do |event|
     json = get_leaderboard(count: 10, page: 1, order: :mmr)
@@ -48,21 +50,6 @@ def build_player_embed(name, match)
         thumbnail: EmbedThumbnail.new(url: thumbnail_url),
         fields: fields
     )
-end
-
-BOT.command :search, description: "Show details of a player on the 1v1 ranked ladder" do |event, *args|
-    match = find_player(args.join(' '))
-
-    return "Could not find player named #{args.join(' ')}" unless match
-
-    response = Faraday.get("#{URL}/players/#{match["player_id"]}")
-    json = JSON.parse(response.body)
-
-    json["leaderboard_entries"].each do 
-        event.respond nil, nil, build_player_embed(match["nickname"], _1)
-    end
-
-    nil
 end
 
 BOT.command :around, description: "Return the page that the given rank falls on" do |event, *args|
