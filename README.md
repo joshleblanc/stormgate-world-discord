@@ -1,5 +1,7 @@
 A very simple discord bot to query the stormgate api.
 
+[Click Here to invite to your server](https://discord.com/oauth2/authorize?&client_id=1204440376262398002&scope=bot)
+
 **Leaderboard**
 
 !!leaderboard will return the top 10 leaderboard entries (sorted by mmr)
