@@ -13,6 +13,11 @@ module Utilities
             json["entries"].first
         end
 
+        def last(player_id:)
+            response = Faraday.get("#{URL}/players/#{player_id}/matches/last")
+            JSON.parse(response.body)
+        end
+
         private 
 
         def query_from_kwargs(kwargs)

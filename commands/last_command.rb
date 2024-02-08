@@ -28,13 +28,24 @@ module Commands
 
             "(#{race_1}) #{name_1} (#{mmr_1}) vs (#{race_2}) #{name_2} (#{mmr_2})"
         end
+        
+        def self.ongoing_title(json)
+            name_1 = json["players"][0]["player"]["nickname"]
+            name_2 = json["players"][1]["player"]["nickname"]
+
+            "#{name_1} vs #{name_2}"
+        end
 
         def self.player_race(json)
-            EmbedField.new(name: "Race", value: json["race"], inline: true)
+            EmbedField.new(name: "Race", value: json["race"].titleize, inline: true)
+        end
+
+        def self.player_mmr(json)
+            EmbedField.new(name: "MMR", value: json["mmr"].floor, inline: true)
         end
 
         def self.player_league(json)
-            league = json["player_leaderboard_entry"]["league"]
+            league = json["player_leaderboard_entry"]["league"].titleize
             tier = json["player_leaderboard_entry"]["tier"]
             EmbedField.new(name: "League", value: "#{league} #{tier}", inline: true)
         end
@@ -47,11 +58,11 @@ module Commands
             json["players"].find { _1["player"]["player_id"] == match["player_id"]}
         end
 
-        def self.color(match, json) 
-            if json["state"] == "ongoing"
-                return "#607D8B"
-            end
+        def self.ping(json)
+            EmbedField.new(name: "Ping", value: json["ping"], inline: true)
+        end
 
+        def self.color(match, json) 
             player = match_player(match, json)
 
             if player["result"] == "win"
@@ -67,21 +78,41 @@ module Commands
             EmbedField.new(name: what.titleize, value: json["scores"][what], inline: true)
         end
 
-        command :last, description: "Return information about the last match a player played", min_args: 1 do |event, *args|
-            api = Utilities::Api.new
+        ##
+        # onogoing 
+        # {"cached_at"=>"2024-02-08T23:40:15.195173900", "match_id"=>"rJO9w8", "state"=>"ongoing", "leaderboard"=>"ranked_1v1", "server"=>"Washington_DC", "players"=>[{"player"=>{"player_id"=>"XDPwbG", "nickname"=>"Néos", "nickname_discriminator"=>"2309"}, "player_leaderboard_entry"=>{"leaderboard_entry_id"=>"k0wY5o", "league"=>"platinum", "tier"=>3, "rank"=>704, "wins"=>81, "losses"=>55, "ties"=>0, "win_rate"=>59.558823}, "race"=>"vanguard", "team"=>1, "party"=>1, "mmr"=>1615.8809, "mmr_updated"=>0.0, "mmr_diff"=>nil, "result"=>nil, "ping"=>43, "scores"=>nil}, {"player"=>{"player_id"=>"CYAC6B", "nickname"=>"vintobea", "nickname_discriminator"=>"1880"}, "player_leaderboard_entry"=>{"leaderboard_entry_id"=>"xiyjpj", "league"=>"platinum", "tier"=>3, "rank"=>773, "wins"=>58, "losses"=>35, "ties"=>0, "win_rate"=>62.365593}, "race"=>"infernals", "team"=>0, "party"=>0, "mmr"=>1619.6914, "mmr_updated"=>0.0, "mmr_diff"=>nil, "result"=>nil, "ping"=>24, "scores"=>nil}], "created_at"=>"2024-02-08T23:30:49", "ended_at"=>nil, "duration"=>nil}
 
-            match = api.search(args.join(' '))
-
-            return "Couldn't find player #{args.join(' ')}" unless match
-        
-            response = Faraday.get("#{URL}/players/#{match["player_id"]}/matches/last")
-            json = JSON.parse(response.body)
-
+        def self.ongoing_response(match, json)
             players = json["players"]
-                
-            blank = EmbedField.new(name: "", value: "", inline: true)
-        
-            event.respond nil, nil, Embed.new(
+
+            Embed.new(
+                fields: [
+                    EmbedField.new(name: "Server", value: json["server"]),
+                    player_league(players[0]),
+                    blank,
+                    player_league(players[1]),
+                    player_race(players[0]),
+                    blank,
+                    player_race(players[1]),
+                    player_mmr(players[0]),
+                    blank,
+                    player_mmr(players[1]),
+                    ping(players[0]),
+                    blank,
+                    ping(players[1]),
+                ],
+                title: match["nickname"],
+                description: ongoing_title(json),
+                footer: EmbedFooter.new(text: "Ongoing"),
+                timestamp: DateTime.parse(json["created_at"]).to_time,
+                color: "#607D8B"
+            )
+        end
+
+        def self.finished_response(match, json)
+            players = json["players"]
+
+            Embed.new(
                 fields: [
                     score(players[0], "xp"),
                     blank,
@@ -106,6 +137,24 @@ module Commands
                 timestamp: DateTime.parse(json["created_at"]).to_time,
                 color: color(match, json)
             )
+        end
+
+        command :last, description: "Return information about the last match a player played", min_args: 1 do |event, *args|
+            api = Utilities::Api.new
+
+            query = args.join(' ')
+
+            match = api.search(query)
+
+            return "Couldn't find player #{query}" unless match
+        
+            json = api.last(player_id: match["player_id"]) 
+
+            event.respond nil, nil, if json["state"] == "ongoing"
+                ongoing_response(match, json)
+            else
+                finished_response(match, json)
+            end
         end
     end
 end
