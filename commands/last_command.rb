@@ -68,7 +68,9 @@ module Commands
         end
 
         command :last, description: "Return information about the last match a player played", min_args: 1 do |event, *args|
-            match = find_player(args.join(' '))
+            api = Utilities::Api.new
+
+            match = api.search(args.join(' '))
 
             return "Couldn't find player #{args.join(' ')}" unless match
         

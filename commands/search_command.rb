@@ -27,7 +27,9 @@ module Commands
         end
 
         command :search, description: "Show details of a player on the 1v1 ranked ladder" do |event, *args|
-            match = find_player(args.join(' '))
+            api = Utilities::Api.new
+
+            match = api.search(args.join(' '))
         
             return "Could not find player named #{args.join(' ')}" unless match
         

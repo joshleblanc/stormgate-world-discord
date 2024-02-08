@@ -16,7 +16,9 @@ module Commands
 
             page = (rank / 10.to_f).ceil
 
-            data = leaderboard_response(get_leaderboard(page: page, count: 10, order: :points), "Points")
+            api = Utilities::Api.new
+
+            data = leaderboard_response(api.leaderboard(page: page, count: 10, order: :points), "Points")
 
             rank_output = rank.to_s.rjust(4, "0")
             data.gsub!(/(#{rank_output}\t.+\t.+\t)(.+)(\n)/, '\1\2 <<\3')

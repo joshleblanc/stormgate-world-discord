@@ -1,17 +1,6 @@
 module Utilities
     module Helpers
         include Discordrb::Webhooks
-
-        def get_leaderboard(**kwargs)
-            query = ""
-        
-            query = kwargs.map do |key, value|
-                "#{key}=#{value}"
-            end.join("&")
-        
-            response = Faraday.get("#{URL}/leaderboards/ranked_1v1?#{query}")
-            JSON.parse(response.body)
-        end
         
         def leaderboard_response(json, points = "MMR")
             resp = [["Rank", "Race", "Name", points]]
@@ -28,12 +17,6 @@ module Utilities
                 #{resp.join("\n")}
                 ```
             OUTPUT
-        end
-        
-        def find_player(query)
-            json = get_leaderboard(count: 1, page: 1, order: :mmr, query:)
-        
-            json["entries"].first
         end
     end
 end
