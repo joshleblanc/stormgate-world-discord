@@ -8,6 +8,7 @@ require 'active_support/duration'
 require_relative 'utilities/helpers'
 require_relative 'commands/last_command'
 require_relative 'commands/search_command'
+require_relative 'commands/leaderboard_command'
 
 include Utilities::Helpers
 
@@ -22,12 +23,7 @@ puts 'Click on it to invite it to your server.'
 
 BOT.include! Commands::LastCommand
 BOT.include! Commands::SearchCommand
-
-BOT.command :leaderboard, description: "Returns the top 10 players on the 1v1 ranked ladder (by mmr)" do |event|
-    json = get_leaderboard(count: 10, page: 1, order: :mmr)
-
-    leaderboard_response(json)
-end
+BOT.include! Commands::LeaderboardCommand
 
 def build_player_embed(name, match)
     fields = []
