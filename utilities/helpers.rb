@@ -20,7 +20,7 @@ module Utilities
             end
         
             resp.map! do |entry|
-                [entry[0].to_s.rjust(4, "0"), entry[1].ljust(4, " "), entry[2].ljust(20, " "), entry[3]].join("\t")
+                [entry[0].to_s.rjust(4, "0"), entry[1].ljust(4, " "), entry[2].ljust(25, " "), entry[3]].join("\t")
             end
         
             <<~OUTPUT
