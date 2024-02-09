@@ -14,7 +14,7 @@ module Commands
             EmbedField.new(name: name.to_s.titleize, value:, inline: true)
         end
 
-        command :stats do |event| 
+        command :stats, description: "Return aggregate statistics" do |event| 
             stats_api = StormgateWorld::StatisticsApi.new
             stats = stats_api.get_statistics
 
@@ -30,7 +30,7 @@ module Commands
                 fields << inner_fields
             end
 
-            fields.insert(1, [blank] * keys.size.next)
+            fields.insert(1, [blank] * keys.size.next) unless stats.races.size > 2
 
             event.send_embed do |embed|
                 embed.fields = fields.transpose.flatten
