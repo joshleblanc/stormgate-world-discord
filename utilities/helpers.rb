@@ -1,6 +1,7 @@
 module Utilities
     module Helpers
         include Discordrb::Webhooks
+        include ActiveSupport::NumberHelper
         
         def leaderboard_response(json, points = "MMR")
             resp = [["Rank", "Race", "Name", points]]
@@ -19,9 +20,20 @@ module Utilities
             OUTPUT
         end
 
+        def number_to_percentage(...)
+            NumberToPercentageConverter.convert(...)
+        end
+
+        def number_with_precision(...)
+            NumberToRoundedConverter.convert(...)
+        end
+
         def blank
             EmbedField.new(name: "", value: "", inline: true)
         end
 
+        def field(name, value, inline = true)
+            EmbedField.new(name:, value: value.to_s, inline:)
+        end
     end
 end

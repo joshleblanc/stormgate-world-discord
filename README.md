@@ -32,3 +32,7 @@ A very simple discord bot to query the stormgate api.
 
 !!stats will return aggregate statistics
 !!stats <league> will return aggregate statistics for a given league
+
+**Activity**
+
+!!activity <query> will return aggregate activity statistics for the player

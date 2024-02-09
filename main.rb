@@ -17,6 +17,7 @@ require_relative 'commands/search_command'
 require_relative 'commands/leaderboard_command'
 require_relative 'commands/around_command'
 require_relative 'commands/stats_command'
+require_relative 'commands/activity_command'
 
 include Utilities::Helpers
 
@@ -28,11 +29,8 @@ BOT = Discordrb::Commands::CommandBot.new token: ENV.fetch("TOKEN"), client_id: 
 puts "This bot's invite URL is #{BOT.invite_url}"
 puts 'Click on it to invite it to your server.'
 
-
-BOT.include! Commands::LastCommand
-BOT.include! Commands::SearchCommand
-BOT.include! Commands::LeaderboardCommand
-BOT.include! Commands::AroundCommand
-BOT.include! Commands::StatsCommand
+Commands.constants.each do |c|
+    BOT.include! Commands.const_get(c)
+end
 
 BOT.run

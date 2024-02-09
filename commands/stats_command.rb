@@ -2,8 +2,7 @@ module Commands
     module StatsCommand 
         extend Discordrb::Commands::CommandContainer
         include Utilities::Helpers
-        include ActiveSupport::NumberHelper
-
+        
         VALID_LEAGUES = [
             "master", "diamond", "platinum", "gold", "silver", "bronze", "aspirant"
         ]
