@@ -40,3 +40,7 @@ A very simple discord bot to query the stormgate api.
 **Activity**
 
 !!activity <query> will return aggregate activity statistics for the player
+
+**Graph**
+
+!!graph <graph type> will return a graph for the given statistic
