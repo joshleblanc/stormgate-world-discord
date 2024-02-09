@@ -18,5 +18,10 @@ module Utilities
                 ```
             OUTPUT
         end
+
+        def blank
+            EmbedField.new(name: "", value: "", inline: true)
+        end
+
     end
 end

@@ -50,10 +50,6 @@ module Commands
             EmbedField.new(name: "League", value: "#{league} #{tier}", inline: true)
         end
 
-        def self.blank
-            EmbedField.new(name: "", value: "", inline: true)
-        end
-
         def self.match_player(match, json) 
             json.players.find { _1.player.player_id == match.player_id}
         end

@@ -1,10 +1,12 @@
 require 'discordrb'
 require 'dotenv/load'
 require 'faraday'
+require 'active_support'
 require 'active_support/inflector'
 require 'active_support/deprecator'
 require 'active_support/deprecation'
 require 'active_support/duration'
+require 'active_support/number_helper'
 require 'stormgate_world'
 
 require_relative 'utilities/api'
@@ -13,6 +15,7 @@ require_relative 'commands/last_command'
 require_relative 'commands/search_command'
 require_relative 'commands/leaderboard_command'
 require_relative 'commands/around_command'
+require_relative 'commands/stats_command'
 
 include Utilities::Helpers
 
@@ -29,5 +32,6 @@ BOT.include! Commands::LastCommand
 BOT.include! Commands::SearchCommand
 BOT.include! Commands::LeaderboardCommand
 BOT.include! Commands::AroundCommand
+BOT.include! Commands::StatsCommand
 
 BOT.run
