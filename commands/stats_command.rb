@@ -3,6 +3,10 @@ module Commands
         extend Discordrb::Commands::CommandContainer
         include Utilities::Helpers
         include ActiveSupport::NumberHelper
+
+        VALID_LEAGUES = [
+            "master", "diamond", "platinum", "gold", "silver", "bronze", "aspirant"
+        ]
         
         def self.stat_embed(stats, name)
             value = stats.aggregated.send(name)
@@ -14,9 +18,15 @@ module Commands
             EmbedField.new(name: name.to_s.titleize, value:, inline: true)
         end
 
-        command :stats, description: "Return aggregate statistics" do |event| 
+        command :stats, description: "Return aggregate statistics" do |event, league| 
+            league = league&.downcase 
+
             stats_api = StormgateWorld::StatisticsApi.new
-            stats = stats_api.get_statistics
+            stats = stats_api.get_statistics(league: league)
+
+            if league && !VALID_LEAGUES.include?(league) 
+                return "Please enter a value league. Valid leages are: #{VALID_LEAGUES.join(', ')}"
+            end
 
             keys = ["win_rate", "pick_rate", "players_count", "matches_count", "wins_count", "losses_count", "matches_count_with_mirror"]
             
@@ -34,6 +44,11 @@ module Commands
 
             event.send_embed do |embed|
                 embed.fields = fields.transpose.flatten
+                if league
+                    embed.description = "Stats for #{league} league"
+                else
+                    embed.description = "Stats for all leagues"
+                end
             end
         end
     end
