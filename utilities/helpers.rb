@@ -2,6 +2,10 @@ module Utilities
     module Helpers
         include Discordrb::Webhooks
         include ActiveSupport::NumberHelper
+
+        VALID_LEAGUES = [
+            "master", "diamond", "platinum", "gold", "silver", "bronze", "aspirant"
+        ]
         
         def leaderboard_response(json, points = "MMR")
             resp = [["Rank", "Race", "Name", points]]

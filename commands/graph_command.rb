@@ -13,13 +13,20 @@ module Commands
             "matches_count_with_mirror" => "Mirror count over time"
         }
 
-        command :graph do |event, graph_type|
+        command :graph do |event, graph_type, league|
+            graph_type&.downcase!
+            league&.downcase!
+            
             return "No graph type specified. Valid graph types: #{TITLE.keys.join(", ")}" unless graph_type
             return "Invalid graph type. Valid graph types: #{TITLE.keys.join(", ")}" unless TITLE.keys.include?(graph_type)
 
-            stats_api = StormgateWorld::StatisticsApi.new 
+            if league && !VALID_LEAGUES.include?(league) 
+                return "Please enter a value league. Valid leages are: #{VALID_LEAGUES.join(', ')}"
+            end
 
-            stats = stats_api.get_statistics
+            stats_api = StormgateWorld::StatisticsApi.new
+
+            stats = stats_api.get_statistics(league:)
 
 
             config = {

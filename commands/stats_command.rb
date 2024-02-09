@@ -3,10 +3,6 @@ module Commands
         extend Discordrb::Commands::CommandContainer
         include Utilities::Helpers
         
-        VALID_LEAGUES = [
-            "master", "diamond", "platinum", "gold", "silver", "bronze", "aspirant"
-        ]
-        
         def self.stat_embed(stats, name)
             value = stats.aggregated.send(name)
             value = if name == "win_rate" || name == "pick_rate"
