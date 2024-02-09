@@ -18,12 +18,21 @@ module Commands
 
             api = Utilities::Api.new
 
-            data = leaderboard_response(api.leaderboard(page: page, count: 10, order: :points), "Points")
+            pagination_container = Utilities::PaginationContainer.new("Around rank #{rank}", 10, event, page: page)
 
-            rank_output = rank.to_s.rjust(4, "0")
-            data.gsub!(/(#{rank_output}\t.+\t.+\t)(.+)(\n)/, '\1\2 <<\3')
+            pagination_container.paginate do |embed, index|
+                json = api.leaderboard(page: index, count: 10, order: :points)
+                rank_output = rank.to_s.rjust(4, "0")
 
-            data
+                response = "Leaderboard, sorted by Points\n"
+                response << leaderboard_response(json, "Points")
+                
+                response.gsub!(/(#{rank_output}\t.+\t.+\t)(.+)(\n)/, '\1\2 <<\3')
+
+                embed.description = response 
+
+                json.total
+            end
         end
     end
 end

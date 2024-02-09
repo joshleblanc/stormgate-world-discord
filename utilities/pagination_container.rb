@@ -3,8 +3,8 @@ module Utilities
         include Discordrb::Webhooks
         include Discordrb::Events
     
-        def initialize(title, page_size, event)
-            @index = 0
+        def initialize(title, page_size, event, page: 1)
+            @index = page
             @total = 1
             @user = event.user
             @event = event
