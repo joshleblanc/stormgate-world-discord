@@ -3,9 +3,9 @@ module Utilities
         include Discordrb::Webhooks
         include Discordrb::Events
     
-        def initialize(title, total, page_size, event)
+        def initialize(title, page_size, event)
             @index = 0
-            @total = total
+            @total = 1
             @user = event.user
             @event = event
             @embed = Embed.new(title: title)
@@ -19,8 +19,8 @@ module Utilities
     
         def paginate(&blk)
             @update_block = -> {
+                @total = blk.call(@embed, @index)
                 @embed.footer.text = "Page #{@index + 1}/#{num_pages} (#{@total} entries)"
-                blk.call(@embed, @index)
             }
             @update_block.call
             send

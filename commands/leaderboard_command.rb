@@ -8,15 +8,15 @@ module Commands
 
             page_size = 10 
 
-            json = api.leaderboard(count: 1, page: 1, order: :mmr)
-
-            pagination_container = Utilities::PaginationContainer.new("Ranked 1v1", json.total, page_size, event)
+            pagination_container = Utilities::PaginationContainer.new("Ranked 1v1", page_size, event)
 
             pagination_container.paginate do |embed, index|
                 json = api.leaderboard(count: page_size, page: index + 1, order: :mmr)
                 response = "Leaderboard, sorted by MMR\n"
                 response << leaderboard_response(json)
                 embed.description = response
+
+                json.total
             end
         end
     end
