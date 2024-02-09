@@ -11,6 +11,7 @@ require 'stormgate_world'
 
 require_relative 'utilities/api'
 require_relative 'utilities/helpers'
+require_relative 'utilities/pagination_container'
 require_relative 'commands/last_command'
 require_relative 'commands/search_command'
 require_relative 'commands/leaderboard_command'
@@ -23,7 +24,7 @@ INF_URL = "https://stormgateworld.com/_astro/infernals-small-glow.jbWP777a.png"
 VG_URL = "https://stormgateworld.com/_astro/vanguard-small-glow.NsCUjSZx.png"
 URL = "https://api.stormgateworld.com/v0"
 
-BOT = Discordrb::Commands::CommandBot.new token: ENV.fetch("TOKEN"), client_id: ENV.fetch("CLIENT_ID"), prefix: ENV.fetch("PREFIX"), intents: [:server_messages]
+BOT = Discordrb::Commands::CommandBot.new token: ENV.fetch("TOKEN"), client_id: ENV.fetch("CLIENT_ID"), prefix: ENV.fetch("PREFIX"), intents: [:server_messages, :server_message_reactions]
 puts "This bot's invite URL is #{BOT.invite_url}"
 puts 'Click on it to invite it to your server.'
 
