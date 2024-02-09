@@ -18,6 +18,7 @@ require_relative 'commands/leaderboard_command'
 require_relative 'commands/around_command'
 require_relative 'commands/stats_command'
 require_relative 'commands/activity_command'
+require_relative 'commands/ongoing_command'
 
 include Utilities::Helpers
 
@@ -31,6 +32,21 @@ puts 'Click on it to invite it to your server.'
 
 Commands.constants.each do |c|
     BOT.include! Commands.const_get(c)
+end
+
+api = Utilities::Api.new
+
+status_updates = [
+    -> { "#{api.ongoing} matches being played" },
+    -> { "#{api.infernal_players} infernal players" },
+    -> { "#{api.vanguard_players} vanguard players"}
+]
+
+BOT.ready do 
+    loop do 
+        BOT.watching = status_updates.sample.call
+        sleep 60 * 5
+    end
 end
 
 BOT.run
