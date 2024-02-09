@@ -19,6 +19,7 @@ require_relative 'commands/around_command'
 require_relative 'commands/stats_command'
 require_relative 'commands/activity_command'
 require_relative 'commands/ongoing_command'
+require_relative 'commands/graph_command'
 
 include Utilities::Helpers
 

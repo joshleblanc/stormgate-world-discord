@@ -8,3 +8,4 @@ gem "faraday", "~> 2.9"
 gem "activesupport", "~> 7.1"
 
 gem "stormgate_world", "~> 1.0"
+gem "mini_magick", "~> 4.12"
