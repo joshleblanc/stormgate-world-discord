@@ -27,3 +27,8 @@ A very simple discord bot to query the stormgate api.
 !!last <query> will return the last match for the closest matching player
 
 ![image](https://github.com/joshleblanc/stormgate-world-discord/assets/1729810/4f2dce6b-0077-4eaf-9419-68267b1f53dd)
+
+**Stats**
+
+!!stats will return aggregate statistics
+!!stats <league> will return aggregate statistics for a given league
