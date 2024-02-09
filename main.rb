@@ -5,6 +5,7 @@ require 'active_support/inflector'
 require 'active_support/deprecator'
 require 'active_support/deprecation'
 require 'active_support/duration'
+require 'stormgate_world'
 
 require_relative 'utilities/api'
 require_relative 'utilities/helpers'

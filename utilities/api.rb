@@ -3,27 +3,19 @@ module Utilities
         URL = "https://api.stormgateworld.com/v0"
 
         def leaderboard(**kwargs)
-            query = query_from_kwargs(kwargs)
-            response = Faraday.get("#{URL}/leaderboards/ranked_1v1?#{query}")
-            JSON.parse(response.body)
+            leaderboard_api = StormgateWorld::LeaderboardsApi.new
+            leaderboard_api.get_leaderboard(kwargs)
         end
 
         def search(query)
-            json = leaderboard(count: 1, page: 1, order: :mmr, query:)
-            json["entries"].first
+            response = leaderboard(count: 1, page: 1, order: :mmr, query:)
+            response.entries.first
         end
 
         def last(player_id:)
-            response = Faraday.get("#{URL}/players/#{player_id}/matches/last")
-            JSON.parse(response.body)
-        end
+            players_api = StormgateWorld::PlayersApi.new
 
-        private 
-
-        def query_from_kwargs(kwargs)
-            kwargs.map do |key, value|
-                "#{key}=#{CGI.escape(value.to_s)}"
-            end.join("&")
+            players_api.get_player_last_match(player_id)
         end
     end
 end

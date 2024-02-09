@@ -27,6 +27,8 @@ GEM
     dotenv (2.8.1)
     drb (2.2.0)
       ruby2_keywords
+    ethon (0.16.0)
+      ffi (>= 1.15.0)
     event_emitter (0.2.6)
     faraday (2.9.0)
       faraday-net_http (>= 2.0, < 3.2)
@@ -55,6 +57,10 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     ruby2_keywords (0.0.5)
+    stormgate_world (1.0.0)
+      typhoeus (~> 1.0, >= 1.0.1)
+    typhoeus (1.4.1)
+      ethon (>= 0.9.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uri (0.13.0)
@@ -72,6 +78,7 @@ DEPENDENCIES
   discordrb (~> 3.5)
   dotenv (~> 2.8)
   faraday (~> 2.9)
+  stormgate_world (~> 1.0)
 
 BUNDLED WITH
    2.4.19

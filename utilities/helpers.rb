@@ -4,8 +4,8 @@ module Utilities
         
         def leaderboard_response(json, points = "MMR")
             resp = [["Rank", "Race", "Name", points]]
-            json["entries"].each do |entry|
-                resp << [entry["rank"], entry["race"][0].upcase, entry["nickname"], entry["mmr"].floor]
+            json.entries.each do |entry|
+                resp << [entry.rank, entry.race[0].upcase, entry.nickname, entry.mmr.floor]
             end
         
             resp.map! do |entry|
