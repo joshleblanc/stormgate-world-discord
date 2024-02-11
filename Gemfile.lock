@@ -13,6 +13,7 @@ GEM
       tzinfo (~> 2.0)
     base64 (0.2.0)
     bigdecimal (3.1.6)
+    cgi (0.4.1)
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     discordrb (3.5.0)
@@ -27,6 +28,8 @@ GEM
     dotenv (2.8.1)
     drb (2.2.0)
       ruby2_keywords
+    erb (4.0.4)
+      cgi (>= 0.3.3)
     ethon (0.16.0)
       ffi (>= 1.15.0)
     event_emitter (0.2.6)
@@ -69,6 +72,7 @@ GEM
     websocket-client-simple (0.8.0)
       event_emitter
       websocket
+    zeitwerk (2.6.13)
 
 PLATFORMS
   x64-mingw-ucrt
@@ -78,9 +82,11 @@ DEPENDENCIES
   activesupport (~> 7.1)
   discordrb (~> 3.5)
   dotenv (~> 2.8)
+  erb (~> 4.0)
   faraday (~> 2.9)
   mini_magick (~> 4.12)
   stormgate_world (~> 1.0)
+  zeitwerk (~> 2.6)
 
 BUNDLED WITH
    2.4.19

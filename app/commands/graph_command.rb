@@ -1,5 +1,5 @@
 module Commands
-    module Graph 
+    module GraphCommand
         extend Discordrb::Commands::CommandContainer
         include Utilities::Helpers
 
