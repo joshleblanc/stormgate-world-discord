@@ -1,15 +1,25 @@
 <style>
   .accent {
     width: 20%;
-    background-image: url(https://playstormgate.com/_astro/vanguard-portrait.8d5891ff_ZXHEgj.webp);
     background-size: cover;
     background-repeat: no-repeat;
     background-size: 400%;
     overflow: none;
+    border-radius: 0 9px 9px 0;
+  }
+
+  .accent.vanguard {
+    background-image: url(https://playstormgate.com/_astro/vanguard-portrait.8d5891ff_ZXHEgj.webp);
+    background-color: #0E1024;
     background-position: 40% 21%;
     border-left: 1px solid #082048;
-    border-radius: 0 9px 9px 0;
-    background-color: #0E1024;
+  }
+
+  .accent.infernals {
+    background-image: url(https://playstormgate.com/_astro/infernal-portrait.dc587298_Z1oM9Gz.webp);
+    background-color: #1F0605;
+    background-position: 50% 50%;
+    border-left: 1px solid #350605;
   }
 
   .faction > img {
@@ -23,8 +33,15 @@
   }
 
   .league {
-    background: linear-gradient(#0B0D24,#0E102F);
     display: flex;
+  }
+
+  .league.infernals {
+    background: linear-gradient(#260606, #340A06);
+  }
+
+  .league.vanguard {
+    background: linear-gradient(#0B0D24,#0E102F);
   }
 
   .league > img {
@@ -44,10 +61,17 @@
   }
 
   .faction {
-    background: linear-gradient(#050717, #0E1024);
     display: flex;
     align-items: center;
     border-radius: 9px 0 0 0;
+  }
+
+  .faction.infernals {
+    background: linear-gradient(#260504, #1F0606);
+  }
+
+  .faction.vanguard {
+    background: linear-gradient(#050717, #0E1024);
   }
 
   .win-loss {
@@ -93,11 +117,18 @@
   }
 
   .stats {
-    background: linear-gradient(#050717, #0E1024);
     display: flex;
     align-items: center;
     border-radius: 0 0 0 9px;
     height: 90px;
+  }
+
+  .stats.vanguard {
+    background: linear-gradient(#050717, #0E1024);
+  }
+
+  .stats.infernals {
+    background: linear-gradient(#260504, #1F0606);
   }
 
   .header {
@@ -114,9 +145,16 @@
   .container {
     width: 400px;
     height: 200px;
-    border: 1px solid #082048;
     border-radius: 10px;
     display: flex;
+  }
+
+  .container.vanguard {
+    border: 1px solid #082048;
+  }
+
+  .container.infernals {
+    border: 1px solid #350605;
   }
 
   body {
@@ -131,56 +169,56 @@
             href="https://fonts.googleapis.com/css?family=Nunito+Sans">
 </head>
 <body>
-  <div class="container">
+  <div class="container <%= entry.race %>">
     <div class="body">
-      <div class="faction">
-        <img src="https://stormgateworld.com/_astro/vanguard-small-glow.NsCUjSZx.png">
-        <span>Vanguard</span>
+      <div class="faction <%= entry.race %>">
+        <img src="<%= faction_icon(entry.race) %>">
+        <span><%= player.nickname %></span>
       </div>
-      <div class="league">
-        <img src="https://stormgateworld.com/_image?href=%2F_astro%2Fmaster-1.Upb0ETXP.png&f=webp">
+      <div class="league <%= entry.race %>">
+        <img src="<%= league_icon(entry.league, entry.tier) %>">
         <div class="league-details">
           <div class="info">
             <div class="header">Rank</div>
-            <div># 123</div>
+            <div># <%= entry.rank %></div>
           </div>
           <div class="info">
             <div class="header">Points</div>
-            <div>12344</div>
+            <div><%= entry.points&.floor %></div>
           </div>
           <div class="info">
             <div class="header">League</div>
-            <div>Master 1</div>
+            <div><%= entry.league&.titleize %> <%= entry.tier %></div>
           </div>
         </div>
       </div>
-      <div class="stats">
+      <div class="stats <%= entry.race %>">
         <div class="info">
           <div class="header">MMR</div>
-          <div>2123</div>
+          <div><%= entry.mmr&.floor %></div>
         </div>
         <div class="info">
           <div class="header">Win Rate</div>
-          <div>76%</div>
+          <div><%= number_with_precision(entry.win_rate, precision: 2) %>%</div>
         </div>
         <div class="info win-loss">
           <div class="win-loss-text">
             <div class="wins">
-              76
+              <%= entry.wins %>
             </div>
             -
             <div class="losses">
-              24
+              <%= entry.losses %>
             </div>
           </div>
           <div class="bar">
-            <div class="win-bar" style="width: 76%"></div>
-            <div class="loss-bar" style="width: 24%"></div>
+            <div class="win-bar" style="width: <%= number_with_precision(entry.win_rate, precision: 2) %>%"></div>
+            <div class="loss-bar" style="width: <%= number_with_precision(100 - entry.win_rate, precision: 2) %>%"></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="accent">
+    <div class="accent <%= entry.race %>">
     </div>
   </div>
 </body>
