@@ -1,0 +1,186 @@
+<style>
+  .accent {
+    width: 20%;
+    background-image: url(https://playstormgate.com/_astro/vanguard-portrait.8d5891ff_ZXHEgj.webp);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-size: 400%;
+    overflow: none;
+    background-position: 40% 21%;
+    border-left: 1px solid #082048;
+    border-radius: 0 9px 9px 0;
+    background-color: #0E1024;
+  }
+
+  .faction > img {
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+  }
+
+  .faction > span {
+    color: white;
+  }
+
+  .league {
+    background: linear-gradient(#0B0D24,#0E102F);
+    display: flex;
+  }
+
+  .league > img {
+    height: 60px;
+    width: 60px;
+    margin-left: 15px;
+  }
+
+  .league > .league-details {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .info {
+    margin-left: 20px;
+  }
+
+  .faction {
+    background: linear-gradient(#050717, #0E1024);
+    display: flex;
+    align-items: center;
+    border-radius: 9px 0 0 0;
+  }
+
+  .win-loss {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+    margin-right: 20px;
+    flex-wrap: wrap;
+  }
+
+  .win-loss-text {
+    display: flex;
+    margin-bottom: 10px;
+    font-size: 10px;
+  }
+
+  .wins {
+    color: #4CD300;
+    margin-right: 5px;
+  }
+
+  .losses {
+    color: #B10D11;
+    margin-left: 5px;
+  }
+
+  .bar {
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+  }
+
+  .win-bar {
+    background-color: #4CD300;
+    height: 5px;
+    border-radius: 5px 0 0 5px
+  }
+
+  .loss-bar {
+    background-color: #B10D11;
+    height: 5px;
+    border-radius: 0 5px 5px 0;
+  }
+
+  .stats {
+    background: linear-gradient(#050717, #0E1024);
+    display: flex;
+    align-items: center;
+    border-radius: 0 0 0 9px;
+    height: 90px;
+  }
+
+  .header {
+    color: rgba(255, 255, 255, 0.6)
+  }
+
+  .body {
+    width: 90%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0);
+
+  }
+
+  .container {
+    width: 400px;
+    height: 200px;
+    border: 1px solid #082048;
+    border-radius: 10px;
+    display: flex;
+  }
+
+  body {
+    font-family: Nunito Sans;
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    color: rgba(255, 255, 255, 0.9);
+  }
+</style>
+<head>
+  <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Nunito+Sans">
+</head>
+<body>
+  <div class="container">
+    <div class="body">
+      <div class="faction">
+        <img src="https://stormgateworld.com/_astro/vanguard-small-glow.NsCUjSZx.png">
+        <span>Vanguard</span>
+      </div>
+      <div class="league">
+        <img src="https://stormgateworld.com/_image?href=%2F_astro%2Fmaster-1.Upb0ETXP.png&f=webp">
+        <div class="league-details">
+          <div class="info">
+            <div class="header">Rank</div>
+            <div># 123</div>
+          </div>
+          <div class="info">
+            <div class="header">Points</div>
+            <div>12344</div>
+          </div>
+          <div class="info">
+            <div class="header">League</div>
+            <div>Master 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="info">
+          <div class="header">MMR</div>
+          <div>2123</div>
+        </div>
+        <div class="info">
+          <div class="header">Win Rate</div>
+          <div>76%</div>
+        </div>
+        <div class="info win-loss">
+          <div class="win-loss-text">
+            <div class="wins">
+              76
+            </div>
+            -
+            <div class="losses">
+              24
+            </div>
+          </div>
+          <div class="bar">
+            <div class="win-bar" style="width: 76%"></div>
+            <div class="loss-bar" style="width: 24%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accent">
+    </div>
+  </div>
+</body>
