@@ -3,6 +3,31 @@ module Commands
         extend Discordrb::Commands::CommandContainer
         include Utilities::Helpers
 
+        def self.build_player_embed(name, match)
+            fields = []
+            fields << EmbedField.new(name: "Rank", value: match.rank.to_s, inline: true)
+            fields << EmbedField.new(name: "MMR", value: match.mmr.floor.to_s, inline: true)
+            fields << EmbedField.new(name: "Points", value: match.points.to_i.floor.to_s, inline: true)
+            fields << EmbedField.new(name: "Wins", value: match.wins.to_s, inline: true)
+            fields << EmbedField.new(name: "Losses", value: match.losses.to_s, inline: true)
+            fields << EmbedField.new(name: "Ties", value: match.ties.to_s, inline: true)
+            fields << EmbedField.new(name: "League", value: "#{match.league&.titleize} #{match.tier}", inline: true)
+            fields << EmbedField.new(name: "Win Rate", value: "#{'%.2f' % match.win_rate}%", inline: true)
+            thumbnail_url = if match.race == "vanguard" 
+                VG_URL
+            else
+                INF_URL
+            end
+
+            Embed.new(
+                title: name,
+                description: "API limits exceeded for image. Ping @Cereal",
+                thumbnail: EmbedThumbnail.new(url: thumbnail_url),
+                fields: fields
+            )
+        end
+
+
         def self.fetch_image(html) 
             cache_key = "htmlcssimage/#{html}"
             cached_url = CACHE.read(cache_key)
@@ -36,10 +61,10 @@ module Commands
                 template = ERB.new(text)
 
                 url = fetch_image(template.result(binding))
-                if url 
+                if false 
                     event.respond url
                 else 
-                    return "Plan limits exceeded. Ping @Cereal on discord"
+                    event.respond nil, nil, build_player_embed(player.nickname, entry)
                 end
                 
             end
