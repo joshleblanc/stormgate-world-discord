@@ -16,7 +16,7 @@ module Commands
                 CACHE.write(cache_key, image.url)
             end
 
-            image.url
+            image&.url
         end
 
         command :search, description: "Show details of a player on the 1v1 ranked ladder" do |event, *args|
@@ -35,7 +35,13 @@ module Commands
                 text = File.read("app/views/profile_card.html.erb")
                 template = ERB.new(text)
 
-                event.respond fetch_image(template.result(binding))
+                url = fetch_image(template.result(binding))
+                if url 
+                    event.respond url
+                else 
+                    return "Plan limits exceeded. Ping @Cereal on discord"
+                end
+                
             end
 
 
