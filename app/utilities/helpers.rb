@@ -54,9 +54,8 @@ module Utilities
         end
 
         def league_icon(league, tier)
-            return nil unless league 
-            
-            LEAGUE_MAP[league.to_sym][tier.pred]
+            return nil unless league
+            LEAGUE_MAP[league&.to_sym][tier.pred]
         end
         
         def leaderboard_response(json, points = "MMR")

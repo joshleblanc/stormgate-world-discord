@@ -9,6 +9,9 @@ loader.setup
 
 include Utilities::Helpers
 
+
+CACHE = ActiveSupport::Cache::FileStore.new("tmp/cache")
+
 INF_URL = "https://stormgateworld.com/_astro/infernals-small-glow.jbWP777a.png"
 VG_URL = "https://stormgateworld.com/_astro/vanguard-small-glow.NsCUjSZx.png"
 

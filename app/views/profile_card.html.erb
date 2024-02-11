@@ -44,10 +44,23 @@
     background: linear-gradient(#0B0D24,#0E102F);
   }
 
-  .league > img {
+  .league-icon {
     height: 60px;
     width: 60px;
     margin-left: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+  }
+
+  .league-icon.infernals {
+    filter: drop-shadow(0 0 0.75rem #350605);
+  }
+
+  .league-icon.vanguard {
+    filter: drop-shadow(0 0 0.75rem 082048);
   }
 
   .league > .league-details {
@@ -176,19 +189,27 @@
         <span><%= player.nickname %></span>
       </div>
       <div class="league <%= entry.race %>">
-        <img src="<%= league_icon(entry.league, entry.tier) %>">
+        <% if entry.league %>
+            <img class="league-icon <%= entry.race %>" src="<%= league_icon(entry.league, entry.tier) %>">
+        <% else %>
+            <div class="league-icon <%= entry.race %>">?</div>
+        <% end %>
         <div class="league-details">
           <div class="info">
             <div class="header">Rank</div>
-            <div># <%= entry.rank %></div>
+            <div># <%= entry.rank || 0 %></div>
           </div>
           <div class="info">
             <div class="header">Points</div>
-            <div><%= entry.points&.floor %></div>
+            <div><%= entry.points&.floor || 0 %></div>
           </div>
           <div class="info">
             <div class="header">League</div>
-            <div><%= entry.league&.titleize %> <%= entry.tier %></div>
+            <% if entry.league %>
+                <div><%= entry.league&.titleize %> <%= entry.tier %></div>
+            <% else %>
+                <div>Unknown</div>
+            <% end %>
           </div>
         </div>
       </div>
