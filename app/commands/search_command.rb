@@ -61,7 +61,7 @@ module Commands
                 template = ERB.new(text)
 
                 url = fetch_image(template.result(binding))
-                if false 
+                if url 
                     event.respond url
                 else 
                     event.respond nil, nil, build_player_embed(player.nickname, entry)
