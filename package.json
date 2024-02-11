@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "html-to-image": "node javascript/htmltoimage.js"
+  },
+  "dependencies": {
+    "node-html-to-image": "^4.0.0"
+  }
+}

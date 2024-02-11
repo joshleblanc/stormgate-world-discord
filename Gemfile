@@ -13,5 +13,3 @@ gem "mini_magick", "~> 4.12"
 gem "erb", "~> 4.0"
 
 gem "zeitwerk", "~> 2.6"
-
-gem "htmlcsstoimage-api", "~> 0.1.3", require: "htmlcsstoimage"

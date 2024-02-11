@@ -3,48 +3,25 @@ module Commands
         extend Discordrb::Commands::CommandContainer
         include Utilities::Helpers
 
-        def self.build_player_embed(name, match)
-            fields = []
-            fields << EmbedField.new(name: "Rank", value: match.rank.to_s, inline: true)
-            fields << EmbedField.new(name: "MMR", value: match.mmr.floor.to_s, inline: true)
-            fields << EmbedField.new(name: "Points", value: match.points.to_i.floor.to_s, inline: true)
-            fields << EmbedField.new(name: "Wins", value: match.wins.to_s, inline: true)
-            fields << EmbedField.new(name: "Losses", value: match.losses.to_s, inline: true)
-            fields << EmbedField.new(name: "Ties", value: match.ties.to_s, inline: true)
-            fields << EmbedField.new(name: "League", value: "#{match.league&.titleize} #{match.tier}", inline: true)
-            fields << EmbedField.new(name: "Win Rate", value: "#{'%.2f' % match.win_rate}%", inline: true)
-            thumbnail_url = if match.race == "vanguard" 
-                VG_URL
-            else
-                INF_URL
-            end
+        TEXT = File.read("app/views/profile_card.html.erb")
 
-            Embed.new(
-                title: name,
-                description: "API limits exceeded for image. Ping @Cereal",
-                thumbnail: EmbedThumbnail.new(url: thumbnail_url),
-                fields: fields
-            )
-        end
+        def self.generate_image(html) 
+            cache_key = "profile-card/#{html}"
 
+            cached = CACHE.read(cache_key)
 
-        def self.fetch_image(html) 
-            cache_key = "htmlcssimage/#{html}"
-            cached_url = CACHE.read(cache_key)
+            return cached if cached 
 
-            return cached_url if cached_url.present?
+            output = `node javascript/htmltoimage.js '#{html}'`
 
-            client = HTMLCSSToImage.new
-            image = client.create_image(html, css: "body { background-color: transparent; }", google_fonts: "Nunito+Sans")
+            CACHE.write(cache_key, output)
 
-            if image.success?
-                CACHE.write(cache_key, image.url)
-            end
-
-            image&.url
+            output
         end
 
         command :search, description: "Show details of a player on the 1v1 ranked ladder" do |event, *args|
+            event.channel.start_typing
+
             query = args.join(' ')
 
             api = Utilities::Api.new
@@ -55,21 +32,23 @@ module Commands
             player_api = StormgateWorld::PlayersApi.new
             player = player_api.get_player(player.player_id)
 
+            attachments = []
+            
+            threads = player.leaderboard_entries.map do |entry|
+                Thread.new do 
+                    template = ERB.new(TEXT)
 
-            player.leaderboard_entries.each do |entry|
-                text = File.read("app/views/profile_card.html.erb")
-                template = ERB.new(text)
-
-                url = fetch_image(template.result(binding))
-                if url 
-                    event.respond url
-                else 
-                    event.respond nil, nil, build_player_embed(player.nickname, entry)
+                    Tempfile.open(binmode: true) do |t|
+                        t.write generate_image(template.result(binding))
+        
+                        t.rewind
+                        event.send_file t, filename: "#{entry.race}.png"
+                    end
                 end
-                
             end
 
-
+            threads.each(&:join)
+            
             nil
         end
     end
