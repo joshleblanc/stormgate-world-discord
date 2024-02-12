@@ -13,10 +13,19 @@ module Commands
             "matches_count_with_mirror" => "Mirror count over time"
         }
 
-        command :graph do |event, graph_type, league|
+        PLAYER_GRAPH_TYPES = {
+            "win_rate" => "win_rate",
+            "matches_count" => "matches",
+            "wins_count" => "wins",
+            "losses_count" => "losses",
+        }
+
+        command :graph do |event, graph_type, league_or_player|
             graph_type&.downcase!
             league&.downcase!
-            
+
+            graph_type_method = graph_type
+
             return "No graph type specified. Valid graph types: #{TITLE.keys.join(", ")}" unless graph_type
             return "Invalid graph type. Valid graph types: #{TITLE.keys.join(", ")}" unless TITLE.keys.include?(graph_type)
 
@@ -24,9 +33,26 @@ module Commands
                 return "Please enter a value league. Valid leages are: #{VALID_LEAGUES.join(', ')}"
             end
 
-            stats_api = StormgateWorld::StatisticsApi.new
+            stats = if league_or_player
+                if VALID_LEAGUES.include?(league)
+                    stats_api = StormgateWorld::StatisticsApi.new
+                    stats_api.get_statistics(league: league_or_player)
+                else
+                    graph_type_method = PLAYER_GRAPH_TYPES[graph_type]
 
-            stats = stats_api.get_statistics(league:)
+                    api = Utilities::Api.new
+
+                    result = api.search(league_or_player)
+
+                    players_api = StormgateWorld::PlayersApi.new
+                    players_api.get_player_statistics_activity(result.player_id)
+                end
+            else
+                stats_api = StormgateWorld::StatisticsApi.new
+                stats_api.get_statistics
+            end
+
+            
 
 
             config = {
@@ -48,7 +74,7 @@ module Commands
                 config[:data][:datasets].push({
                     label: race.race.titleize,
                     data: race.history.map do |hist|
-                        number_with_precision(hist.send(graph_type), precision: 2)
+                        number_with_precision(hist.send(graph_type_method), precision: 2)
                     end
                 })
             end
