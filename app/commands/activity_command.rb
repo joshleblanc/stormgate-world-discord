@@ -5,12 +5,12 @@ module Commands
 
         command :activity, description: "return activity information for a given player" do |event, *args|
             api = Utilities::Api.new 
-            player = api.search(args.join(' '))
+            player = api.find_player(args.join(' '))
 
             return "No player found for #{args.join(' ')}" unless player
 
             players_api = StormgateWorld::PlayersApi.new
-            activity = players_api.get_player_statistics_activity(player.player_id).aggregated
+            activity = players_api.get_player_statistics_activity(player.id).aggregated
             event.send_embed do |embed|
                 embed.title = "#{player.nickname}'s activity"
                 embed.description = ""

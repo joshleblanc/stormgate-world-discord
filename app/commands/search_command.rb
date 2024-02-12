@@ -24,14 +24,13 @@ module Commands
 
             query = args.join(' ')
 
+            player_api = StormgateWorld::PlayersApi.new
             api = Utilities::Api.new
-            player = api.search(query)
+
+            player = api.find_player(query)
 
             return "No player found for #{query}" unless player
-
-            player_api = StormgateWorld::PlayersApi.new
-            player = player_api.get_player(player.player_id)
-
+            
             attachments = []
             
             threads = player.leaderboard_entries.map do |entry|

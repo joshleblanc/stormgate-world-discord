@@ -36,9 +36,9 @@ module Utilities
             bronze: %w[
                 https://stormgateworld.com/_image?href=%2F_astro%2Fbronze-1.9Sel4tuE.png&f=webp
                 https://stormgateworld.com/_image?href=%2F_astro%2Fbronze-2.jkb7L-ym.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fbronze-3.WWFlhd3O.png&f=webps
+                https://stormgateworld.com/_image?href=%2F_astro%2Fbronze-3.WWFlhd3O.png&f=webp
             ],
-            aspirant: %w[
+        aspirant: %w[
                 https://stormgateworld.com/_image?href=%2F_astro%2Faspirant-1.4t-uHZDX.png&f=webp
                 https://stormgateworld.com/_image?href=%2F_astro%2Faspirant-2.HZNpSbVW.png&f=webp
                 https://stormgateworld.com/_image?href=%2F_astro%2Faspirant-3.lDwWjEs4.png&f=webp

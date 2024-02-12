@@ -51,7 +51,7 @@ module Commands
         end
 
         def self.match_player(match, json) 
-            json.players.find { _1.player.player_id == match.player_id}
+            json.players.find { _1.player.player_id == match.id}
         end
 
         def self.ping(json)
@@ -140,11 +140,11 @@ module Commands
 
             query = args.join(' ')
 
-            match = api.search(query)
+            match = api.find_player(query)
 
             return "Couldn't find player #{query}" unless match
         
-            json = api.last(player_id: match.player_id) 
+            json = api.last(player_id: match.id) 
 
             event.respond nil, nil, if json.state == "ongoing"
                 ongoing_response(match, json)

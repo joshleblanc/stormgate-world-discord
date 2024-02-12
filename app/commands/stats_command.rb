@@ -16,12 +16,12 @@ module Commands
         command :stats, description: "Return aggregate statistics" do |event, league| 
             league = league&.downcase 
 
-            stats_api = StormgateWorld::StatisticsApi.new
-            stats = stats_api.get_statistics(league: league)
-
             if league && !VALID_LEAGUES.include?(league) 
                 return "Please enter a value league. Valid leages are: #{VALID_LEAGUES.join(', ')}"
             end
+
+            stats_api = StormgateWorld::StatisticsApi.new
+            stats = stats_api.get_statistics(league: league)
 
             keys = ["win_rate", "pick_rate", "players_count", "matches_count", "wins_count", "losses_count", "matches_count_with_mirror"]
             

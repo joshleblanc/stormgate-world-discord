@@ -26,6 +26,24 @@ module Utilities
             response.entries.first
         end
 
+        def find_player(query)
+            players_api = StormgateWorld::PlayersApi.new
+
+            player = if query.size == 6
+                begin 
+                    players_api.get_player(query) 
+                rescue 
+                    nil
+                end
+            end
+                
+            return player if player 
+
+            result = search(query)
+            
+            players_api.get_player(result.player_id) if result
+        end
+
         def last(player_id:)
             players_api = StormgateWorld::PlayersApi.new
 
