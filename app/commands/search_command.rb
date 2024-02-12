@@ -29,7 +29,7 @@ module Commands
 
             player = api.find_player(query)
 
-            return "No player found for #{query}" unless player || player_search
+            return "No player found for #{query}" unless player
             
             attachments = []
             
