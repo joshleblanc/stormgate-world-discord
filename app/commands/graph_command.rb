@@ -22,19 +22,15 @@ module Commands
 
         command :graph do |event, graph_type, league_or_player|
             graph_type&.downcase!
-            league&.downcase!
+            league_or_player&.downcase!
 
             graph_type_method = graph_type
 
             return "No graph type specified. Valid graph types: #{TITLE.keys.join(", ")}" unless graph_type
             return "Invalid graph type. Valid graph types: #{TITLE.keys.join(", ")}" unless TITLE.keys.include?(graph_type)
 
-            if league && !VALID_LEAGUES.include?(league) 
-                return "Please enter a value league. Valid leages are: #{VALID_LEAGUES.join(', ')}"
-            end
-
             stats = if league_or_player
-                if VALID_LEAGUES.include?(league)
+                if VALID_LEAGUES.include?(league_or_player)
                     stats_api = StormgateWorld::StatisticsApi.new
                     stats_api.get_statistics(league: league_or_player)
                 else
@@ -70,9 +66,20 @@ module Commands
                 
             }
 
+            p stats.races.size
+
             stats.races.each do |race|
+
+                label = if race.respond_to?(:race) 
+                    race.race
+                else
+                    race.history.first&.race 
+                end
+
+                next unless label 
+
                 config[:data][:datasets].push({
-                    label: race.race.titleize,
+                    label: label.titleize,
                     data: race.history.map do |hist|
                         number_with_precision(hist.send(graph_type_method), precision: 2)
                     end
