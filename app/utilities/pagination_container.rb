@@ -88,6 +88,7 @@ module Utilities
                 @message.delete_all_reactions
             rescue StandardError => e
                 p "Failed to remove reaction from pagination container"
+                nil
             end
         end
     end
