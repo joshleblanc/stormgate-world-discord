@@ -24,13 +24,15 @@ module Commands
 
             query = args.join(' ')
 
-            api = Utilities::Api.new
-            player = api.search(query)
-
-            return "No player found for #{query}" unless player
-
             player_api = StormgateWorld::PlayersApi.new
-            player = player_api.get_player(player.player_id)
+            api = Utilities::Api.new
+
+            player = player_api.get_player(query) if query.size == 6 
+            player_search = api.search(query) unless player 
+
+            return "No player found for #{query}" unless player || player_search
+            
+            player = player_api.get_player(player_search.player_id) unless player
 
             attachments = []
             
