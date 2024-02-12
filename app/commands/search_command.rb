@@ -27,13 +27,10 @@ module Commands
             player_api = StormgateWorld::PlayersApi.new
             api = Utilities::Api.new
 
-            player = player_api.get_player(query) if query.size == 6 
-            player_search = api.search(query) unless player 
+            player = api.find_player(query)
 
             return "No player found for #{query}" unless player || player_search
             
-            player = player_api.get_player(player_search.player_id) unless player
-
             attachments = []
             
             threads = player.leaderboard_entries.map do |entry|
