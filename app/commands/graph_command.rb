@@ -36,6 +36,36 @@ module Commands
             end
         end
 
+        def self.fetch_chart(config)
+            cache_key = "chart/#{config}"
+
+            cached = CACHE.read(cache_key)
+
+            return cached if cached 
+
+            conn = Faraday.new(
+                url: "https://quickchart.io/chart",
+                headers: { 
+                    "Content-Type" => "application/json"
+                },
+            )
+
+            response = conn.post do |req|
+                req.body = JSON.generate({
+                    backgroundColor: "#EDF8FD",
+                    width: 500,
+                    height: 300,
+                    chart: config
+                })
+            end
+
+            data = response.body
+
+            CACHE.write(cache_key, data)
+
+            data
+        end
+
         command :graph do |event, graph_type, league_or_player|
             graph_type&.downcase!
             league_or_player&.downcase!
@@ -52,12 +82,14 @@ module Commands
                 else
                     graph_type_method = PLAYER_GRAPH_TYPES[graph_type]
 
+                    return "Invalid graph type for player. Valid graph types: #{PLAYER_GRAPH_TYPES.keys.join(", ")}" unless graph_type_method
+
                     api = Utilities::Api.new
 
-                    result = api.search(league_or_player)
+                    result = api.find_player(league_or_player)
 
                     players_api = StormgateWorld::PlayersApi.new
-                    players_api.get_player_statistics_activity(result.player_id)
+                    players_api.get_player_statistics_activity(result.id)
                 end
             else
                 stats_api = StormgateWorld::StatisticsApi.new
@@ -80,7 +112,6 @@ module Commands
             }
 
             stats.races.each do |race|
-
                 label = if race.respond_to?(:race) 
                     race.race
                 else
@@ -100,30 +131,14 @@ module Commands
                 })
             end
 
-            conn = Faraday.new(
-                url: "https://quickchart.io/chart",
-                headers: { 
-                    "Content-Type" => "application/json"
-                },
-            )
-
-            response = conn.post do |req|
-                req.body = JSON.generate({
-                    backgroundColor: "#EDF8FD",
-                    width: 500,
-                    height: 300,
-                    chart: config
-                })
-            end
-
+            data = fetch_chart(config)
 
             Tempfile.open(binmode: true) do |t|
-                t.write response.body
+                t.write data
 
                 t.rewind
                 event.send_file t, filename: "win_rate.png"
             end
-        
         end
     end
 end
