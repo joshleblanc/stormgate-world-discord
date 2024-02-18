@@ -72,9 +72,6 @@ module Commands
             graph_type&.downcase!
             league_or_player&.downcase!
 
-            p league_or_player
-
-
             graph_type_method = graph_type
 
             return "No graph type specified. Valid graph types: #{TITLE.keys.join(", ")}" unless graph_type
