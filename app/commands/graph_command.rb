@@ -20,6 +20,22 @@ module Commands
             "losses_count" => "losses",
         }
 
+        def self.line_color(race)
+            if race == "infernals"
+                "rgb(160, 46, 23)"
+            elsif race == "vanguard"
+                "rgb(11, 86, 151)"
+            end
+        end
+
+        def self.background_color(race)
+            if race == "infernals"
+                "rgba(160, 46, 23, 0.5)"
+            elsif race == "vanguard"
+                "rgba(11, 86, 151, 0.5)"
+            end
+        end
+
         command :graph do |event, graph_type, league_or_player|
             graph_type&.downcase!
             league_or_player&.downcase!
@@ -48,9 +64,6 @@ module Commands
                 stats_api.get_statistics
             end
 
-            
-
-
             config = {
                 type: 'line',
                 data: {
@@ -66,8 +79,6 @@ module Commands
                 
             }
 
-            p stats.races.size
-
             stats.races.each do |race|
 
                 label = if race.respond_to?(:race) 
@@ -80,6 +91,9 @@ module Commands
 
                 config[:data][:datasets].push({
                     label: label.titleize,
+                    borderColor: line_color(label),
+                    backgroundColor: background_color(label),
+                    lineTension: 0.4,
                     data: race.history.map do |hist|
                         number_with_precision(hist.send(graph_type_method), precision: 2)
                     end
