@@ -110,7 +110,13 @@ module Commands
                     player = result
 
                     players_api = StormgateWorld::PlayersApi.new
-                    players_api.get_player_statistics_activity(result.id)
+
+                    begin
+                        players_api.get_player_statistics_activity(result.id)
+                    rescue 
+                        return "Failed to fetch statistics for #{result.nickname}##{result.id}"
+                    end
+                    
                 end
             else
                 stats_api = StormgateWorld::StatisticsApi.new
