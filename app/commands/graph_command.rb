@@ -36,6 +36,20 @@ module Commands
             end
         end
 
+        def self.title(graph_type, league_or_player, player)
+            title = [TITLE[graph_type]]
+
+            if league_or_player.present?
+                if player.present?
+                    title << "#{player.nickname}##{player.id}"
+                else 
+                    title << "#{league_or_player} league"
+                end                
+            end
+
+            title
+        end
+
         def self.fetch_chart(config)
             cache_key = "chart/#{config}"
 
@@ -71,6 +85,7 @@ module Commands
             
             graph_type&.downcase!
             league_or_player&.downcase!
+            player = nil
 
             graph_type_method = graph_type
 
@@ -92,6 +107,8 @@ module Commands
 
                     return "No player found for #{league_or_player}" unless result
 
+                    player = result
+
                     players_api = StormgateWorld::PlayersApi.new
                     players_api.get_player_statistics_activity(result.id)
                 end
@@ -109,7 +126,7 @@ module Commands
                 options: {
                     title: {
                         display: true,
-                        text: TITLE[graph_type]
+                        text: title(graph_type, league_or_player, player)
                     }
                 }
                 
