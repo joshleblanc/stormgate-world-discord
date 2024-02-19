@@ -77,7 +77,7 @@ module Commands
             return "No graph type specified. Valid graph types: #{TITLE.keys.join(", ")}" unless graph_type
             return "Invalid graph type. Valid graph types: #{TITLE.keys.join(", ")}" unless TITLE.keys.include?(graph_type)
 
-            stats = if league_or_player
+            stats = if league_or_player.present?
                 if VALID_LEAGUES.include?(league_or_player)
                     stats_api = StormgateWorld::StatisticsApi.new
                     stats_api.get_statistics(league: league_or_player)
