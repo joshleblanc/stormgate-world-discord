@@ -13,3 +13,5 @@ gem "mini_magick", "~> 4.12"
 gem "erb", "~> 4.0"
 
 gem "zeitwerk", "~> 2.6"
+
+gem "actionview", "~> 7.1", require: 'action_view'

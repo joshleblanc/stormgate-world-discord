@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.accent {
+    width: 20%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-size: 400%;
+    overflow: none;
+    border-radius: 0 9px 9px 0;
+}
+
+.accent.vanguard {
+    background-image: url(https://playstormgate.com/_astro/vanguard-portrait.8d5891ff_ZXHEgj.webp);
+    background-color: #0E1024;
+    background-position: 40% 21%;
+    border-left: 1px solid #082048;
+}
+
+.accent.infernals {
+    background-image: url(https://playstormgate.com/_astro/infernal-portrait.dc587298_Z1oM9Gz.webp);
+    background-color: #1F0605;
+    background-position: 50% 50%;
+    border-left: 1px solid #350605;
+}
+
+.faction>img {
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+}
+
+.faction>span {
+    color: white;
+}
+
+.league {
+    display: flex;
+}
+
+.league.infernals {
+    background: linear-gradient(#260606, #340A06);
+}
+
+.league.vanguard {
+    background: linear-gradient(#0B0D24, #0E102F);
+}
+
+.league-icon {
+    height: 60px;
+    width: 60px;
+    margin-left: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
+
+.league-icon.infernals {
+    filter: drop-shadow(0 0 0.75rem #350605);
+}
+
+.league-icon.vanguard {
+    filter: drop-shadow(0 0 0.75rem 082048);
+}
+
+.league>.league-details {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.info {
+    margin-left: 20px;
+}
+
+.faction {
+    display: flex;
+    align-items: center;
+    border-radius: 9px 0 0 0;
+}
+
+.faction.infernals {
+    background: linear-gradient(#260504, #1F0606);
+}
+
+.faction.vanguard {
+    background: linear-gradient(#050717, #0E1024);
+}
+
+.win-loss {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+    margin-right: 20px;
+    flex-wrap: wrap;
+}
+
+.win-loss-text {
+    display: flex;
+    margin-bottom: 10px;
+    font-size: 10px;
+}
+
+.wins {
+    color: #4CD300;
+    margin-right: 5px;
+}
+
+.losses {
+    color: #B10D11;
+    margin-left: 5px;
+}
+
+.bar {
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+}
+
+.win-bar {
+    background-color: #4CD300;
+    height: 5px;
+    border-radius: 5px 0 0 5px
+}
+
+.loss-bar {
+    background-color: #B10D11;
+    height: 5px;
+    border-radius: 0 5px 5px 0;
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+    border-radius: 0 0 0 9px;
+    height: 90px;
+}
+
+.stats.vanguard {
+    background: linear-gradient(#050717, #0E1024);
+}
+
+.stats.infernals {
+    background: linear-gradient(#260504, #1F0606);
+}
+
+.header {
+    color: rgba(255, 255, 255, 0.6)
+}
+
+.container {
+    border-radius: 10px;
+    display: flex;
+    width: 100%;
+    height: 100%
+}
+
+.container.vanguard {
+    border-color:  #082048;
+}
+
+.container.infernals  {
+    border-color:  #350605;
+}
+
+body {
+    font-family: Nunito Sans;
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    color: rgba(255, 255, 255, 0.9);
+}

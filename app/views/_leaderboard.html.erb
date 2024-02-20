@@ -1,0 +1,48 @@
+<%= render "head" %>
+<body>
+  <div class="relative overflow-x-auto rounded border border-gray-500/40 bg-zinc-900 p-3 backdrop-blur-md sm:rounded-xl sm:p-4 -mx-3 sm:mx-0">
+    <div class="sticky left-0 top-0 flex flex-wrap items-center gap-x-5 gap-y-1">
+      <h3 class="font-display flex-auto text-xl font-bold text-gray-200">
+        Leaderboard (By MMR)
+      </h3>
+    </div>
+    <div class="mt-3 md:mt-4">
+      <div class="-mx-3 -mb-3 sm:-mx-4 md:-mb-3.5">
+        <table class="mx-auto w-full table-auto whitespace-nowrap text-left transition-opacity md:text-lg">
+          <tbody>
+            <% json.entries.each do |entry| %>
+              <tr class="border-b border-gray-700/50 last:border-b-0">
+                <td class="text-md px-1 py-2 text-right font-extrabold text-gray-400 md:px-4 md:text-lg"><%= entry.rank %>.</td>
+                <td class="min-w-10 pr-2 md:pr-4">
+                  <img class="h-6 w-6" src="<%= faction_icon(entry.race) %>">
+                </td>
+                <td class="w-full max-w-20 truncate pr-2 font-bold text-gray-50 md:max-w-none md:pr-4">
+                  <div class="flex items-center gap-2">
+                    <div class="truncate"><%= entry.nickname %></div>
+                  </div>
+                </td>
+                <td class="pr-2 text-right text-sm font-bold text-gray-100 md:pr-4">
+                  <div class="flex items-center justify-end gap-1">
+                    <span><%= entry.mmr&.floor || 0 %></span>
+                    <img class="w-4 min-w-8 md:w-8" src="<%= league_icon(entry.league, entry.tier) %>">
+                  </div>
+                </td>
+                <td class="pr-2 text-right text-sm text-gray-100 md:pr-4">
+                  <%= entry.wins %>
+                  <span class="text-green-400"> W</span>
+                </td>
+                <td class="pr-2 text-right text-sm text-gray-100 md:pr-4">
+                  <%= entry.losses %>
+                  <span class="text-red-400"> L</span>
+                </td>
+                <td class="pr-2 text-right text-sm text-gray-100 md:pr-4">
+                  <%= number_to_percentage(entry.win_rate, precision: 0) %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>

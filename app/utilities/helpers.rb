@@ -38,7 +38,7 @@ module Utilities
                 https://stormgateworld.com/_image?href=%2F_astro%2Fbronze-2.jkb7L-ym.png&f=webp
                 https://stormgateworld.com/_image?href=%2F_astro%2Fbronze-3.WWFlhd3O.png&f=webp
             ],
-        aspirant: %w[
+            aspirant: %w[
                 https://stormgateworld.com/_image?href=%2F_astro%2Faspirant-1.4t-uHZDX.png&f=webp
                 https://stormgateworld.com/_image?href=%2F_astro%2Faspirant-2.HZNpSbVW.png&f=webp
                 https://stormgateworld.com/_image?href=%2F_astro%2Faspirant-3.lDwWjEs4.png&f=webp
@@ -54,7 +54,7 @@ module Utilities
         end
 
         def league_icon(league, tier)
-            return nil unless league
+            return "https://stormgateworld.com/_image?href=%2F_astro%2Funranked.BrngpH03.png&f=webp" unless league
             LEAGUE_MAP[league&.to_sym][tier.pred]
         end
         
@@ -89,6 +89,35 @@ module Utilities
 
         def field(name, value, inline = true)
             EmbedField.new(name:, value: value.to_s, inline:)
+        end
+
+        def render(...)
+            Utilities::Renderer.instance.render(...)
+        end
+
+        def generate_image(html) 
+            cache_key = Base64.encode64("image-generation/#{html}")
+
+            cached = CACHE.read(cache_key)
+
+            #return cached if cached 
+
+            output = Open3.capture3("node", "javascript/htmltoimage.js", html)
+
+            output = output.first
+
+            CACHE.write(cache_key, output)
+
+            output
+        end
+
+        def send_html(event, html)
+            Tempfile.open(binmode: true) do |t|
+                t.write generate_image(html)
+
+                t.rewind
+                event.send_file t, filename: "output.png"
+            end
         end
     end
 end

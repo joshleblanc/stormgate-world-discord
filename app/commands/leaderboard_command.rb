@@ -3,21 +3,18 @@ module Commands
         extend Discordrb::Commands::CommandContainer
         include Utilities::Helpers
 
-        command :leaderboard, description: "Returns the top 10 players on the 1v1 ranked ladder (by mmr)" do |event|
+        command :leaderboard, description: "Returns the top 10 players on the 1v1 ranked ladder (by mmr)" do |event, page|
             api = Utilities::Api.new
 
-            page_size = 10 
+            page = [1, page.to_i].max || 1
 
-            pagination_container = Utilities::PaginationContainer.new("Ranked 1v1", page_size, event)
+            json = api.leaderboard(count: 10, page: page, order: :mmr)
 
-            pagination_container.paginate do |embed, index|
-                json = api.leaderboard(count: page_size, page: index + 1, order: :mmr)
-                response = "Leaderboard, sorted by MMR\n"
-                response << leaderboard_response(json)
-                embed.description = response
-
-                json.total
-            end
+            output = render("leaderboard", {
+                json:,
+            })
+            
+            send_html event, output
         end
     end
 end

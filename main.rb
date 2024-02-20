@@ -1,11 +1,25 @@
 
 require 'bundler/setup'
+require 'open3'
+require 'base64'
+
+module Rails 
+    def self.logger 
+        Logger.new(STDOUT)
+    end
+end
 
 Bundler.require
+
+ENCODING_FLAG = '#.*coding[:=]\s*(\S+)[ \t]*'
 
 loader = Zeitwerk::Loader.new
 loader.push_dir("app")
 loader.setup
+
+Utilities::Renderer.config([
+    "app/views"
+])
 
 include Utilities::Helpers
 

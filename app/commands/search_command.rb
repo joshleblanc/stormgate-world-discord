@@ -3,22 +3,6 @@ module Commands
         extend Discordrb::Commands::CommandContainer
         include Utilities::Helpers
 
-        TEXT = File.read("app/views/profile_card.html.erb")
-
-        def self.generate_image(html) 
-            cache_key = "profile-card/#{html}"
-
-            cached = CACHE.read(cache_key)
-
-            return cached if cached 
-
-            output = `node javascript/htmltoimage.js '#{html}'`
-
-            CACHE.write(cache_key, output)
-
-            output
-        end
-
         command :search, description: "Show details of a player on the 1v1 ranked ladder" do |event, *args|
             event.channel.start_typing
 
@@ -35,14 +19,9 @@ module Commands
             
             threads = player.leaderboard_entries.map do |entry|
                 Thread.new do 
-                    template = ERB.new(TEXT)
-
-                    Tempfile.open(binmode: true) do |t|
-                        t.write generate_image(template.result(binding))
-        
-                        t.rewind
-                        event.send_file t, filename: "#{entry.race}.png"
-                    end
+                    send_html(event, render("profile_card", {
+                        entry:, player:
+                    }))
                 end
             end
 
