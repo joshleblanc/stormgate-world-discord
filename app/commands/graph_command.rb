@@ -80,6 +80,96 @@ module Commands
             data
         end
 
+
+        def self.bar_graph(stats, method)
+            config = {
+                type: 'bar',
+                data: {
+                    labels: stats.races[0].history.map { _1.date.to_s },
+                    datasets: []
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: ""
+                    }
+                }
+                
+            }
+
+            stats.races.each do |race|
+                label = if race.respond_to?(:race) 
+                    race.race
+                else
+                    race.history.first&.race 
+                end
+
+                next unless label 
+
+                sum = 0
+                config[:data][:datasets].push({
+                    label: label.titleize,
+                    borderColor: line_color(label),
+                    backgroundColor: background_color(label),
+                    data: race.history.map.with_index do |hist, index|
+                        datum = hist.send(method)
+
+                        datum
+                    end
+                })
+            end
+
+            config
+        end
+
+        def self.line_graph(stats, method, is_player = false)
+            config = {
+                type: 'line',
+                data: {
+                    labels: stats.races[0].history.map { _1.date.to_s },
+                    datasets: []
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: ""
+                    }
+                }
+                
+            }
+
+            stats.races.each do |race|
+                label = if race.respond_to?(:race) 
+                    race.race
+                else
+                    race.history.first&.race 
+                end
+
+                next unless label 
+
+                sum = 0
+                config[:data][:datasets].push({
+                    label: label.titleize,
+                    borderColor: line_color(label),
+                    backgroundColor: background_color(label),
+                    lineTension: 0.4,
+                    data: race.history.map.with_index do |hist, index|
+                        datum = hist.send(method)
+                        sum += datum
+
+                        if is_player
+                            number_with_precision(sum / index.next, precision: 2)
+                        else 
+                            number_with_precision(datum, precision: 2)
+                        end
+                        
+                    end
+                })
+            end
+
+            config
+        end
+
         command :graph do |event, graph_type, *args|
             league_or_player = args.join(" ")
             
@@ -123,40 +213,14 @@ module Commands
                 stats_api.get_statistics
             end
 
-            config = {
-                type: 'line',
-                data: {
-                    labels: stats.races[0].history.map { _1.date.to_s },
-                    datasets: []
-                },
-                options: {
-                    title: {
-                        display: true,
-                        text: title(graph_type, league_or_player, player)
-                    }
-                }
-                
-            }
+            
 
-            stats.races.each do |race|
-                label = if race.respond_to?(:race) 
-                    race.race
-                else
-                    race.history.first&.race 
-                end
-
-                next unless label 
-
-                config[:data][:datasets].push({
-                    label: label.titleize,
-                    borderColor: line_color(label),
-                    backgroundColor: background_color(label),
-                    lineTension: 0.4,
-                    data: race.history.map do |hist|
-                        number_with_precision(hist.send(graph_type_method), precision: 2)
-                    end
-                })
+            config = if player.present? && PLAYER_GRAPH_TYPES.keys.include?(graph_type) && graph_type != "win_rate"
+                bar_graph(stats, graph_type_method)
+            else
+                line_graph(stats, graph_type_method, player.present?)
             end
+            config[:options][:title][:text] = title(graph_type, league_or_player, player)
 
             data = fetch_chart(config)
 
