@@ -50,37 +50,6 @@ module Commands
             title
         end
 
-        def self.fetch_chart(config)
-            cache_key = "chart/#{config}"
-
-            cached = CACHE.read(cache_key)
-
-            return cached if cached 
-
-            conn = Faraday.new(
-                url: "https://quickchart.io/chart",
-                headers: { 
-                    "Content-Type" => "application/json"
-                },
-            )
-
-            response = conn.post do |req|
-                req.body = JSON.generate({
-                    backgroundColor: "#EDF8FD",
-                    width: 500,
-                    height: 300,
-                    chart: config
-                })
-            end
-
-            data = response.body
-
-            CACHE.write(cache_key, data)
-
-            data
-        end
-
-
         def self.bar_graph(stats, method)
             config = {
                 type: 'bar',

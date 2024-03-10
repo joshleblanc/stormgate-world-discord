@@ -53,6 +53,36 @@ module Utilities
             end
         end
 
+        def fetch_chart(config)
+            cache_key = "chart/#{config}"
+
+            cached = CACHE.read(cache_key)
+
+           # return cached if cached 
+
+            conn = Faraday.new(
+                url: "https://quickchart.io/chart",
+                headers: { 
+                    "Content-Type" => "application/json"
+                },
+            )
+
+            response = conn.post do |req|
+                req.body = JSON.generate({
+                    backgroundColor: "#EDF8FD",
+                    width: 500,
+                    height: 300,
+                    chart: config
+                })
+            end
+
+            data = response.body
+
+            CACHE.write(cache_key, data)
+
+            data
+        end
+
         def league_icon(league, tier)
             return "https://stormgateworld.com/_image?href=%2F_astro%2Funranked.BrngpH03.png&f=webp" unless league
             LEAGUE_MAP[league&.to_sym][tier.pred]
