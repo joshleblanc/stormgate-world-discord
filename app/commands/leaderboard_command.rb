@@ -6,7 +6,7 @@ module Commands
         command :leaderboard, description: "Returns the top 10 players on the 1v1 ranked ladder (by mmr)" do |event, page|
             api = Utilities::Api.new
 
-            page = [1, page.to_i].max || 1
+            page = [0, page.to_i].max || 0
 
             json = api.leaderboard(count: 10, page: page, order: :mmr)
 

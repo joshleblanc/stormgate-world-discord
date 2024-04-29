@@ -10,33 +10,33 @@
       <div class="-mx-3 -mb-3 sm:-mx-4 md:-mb-3.5">
         <table class="mx-auto w-full table-auto whitespace-nowrap text-left transition-opacity md:text-lg">
           <tbody>
-            <% json.entries.each do |entry| %>
+            <% json.each do |entry| %>
               <tr class="border-b border-gray-700/50 last:border-b-0">
-                <td class="text-md px-1 py-2 text-right font-extrabold text-gray-400 md:px-4 md:text-lg"><%= entry.rank %>.</td>
+                <td class="text-md px-1 py-2 text-right font-extrabold text-gray-400 md:px-4 md:text-lg"><%= entry["rank"] %>.</td>
                 <td class="min-w-10 pr-2 md:pr-4">
-                  <img class="h-6 w-6" src="<%= faction_icon(entry.race) %>">
+                  <img class="h-6 w-6" src="<%= faction_icon(entry["race"]) %>">
                 </td>
                 <td class="w-full max-w-20 truncate pr-2 font-bold text-gray-50 md:max-w-none md:pr-4">
                   <div class="flex items-center gap-2">
-                    <div class="truncate"><%= entry.nickname %></div>
+                    <div class="truncate"><%= entry["playerName"] %></div>
                   </div>
                 </td>
                 <td class="pr-2 text-right text-sm font-bold text-gray-100 md:pr-4">
                   <div class="flex items-center justify-end gap-1">
-                    <span><%= entry.mmr&.floor || 0 %></span>
-                    <img class="w-4 min-w-8 md:w-8" src="<%= league_icon(entry.league, entry.tier) %>">
+                    <span><%= entry["mmr"]&.floor || 0 %></span>
+                    <img class="w-4 min-w-8 md:w-8" src="<%= league_icon(entry["league"], entry["tier"]) %>">
                   </div>
                 </td>
                 <td class="pr-2 text-right text-sm text-gray-100 md:pr-4">
-                  <%= entry.wins %>
+                  <%= entry["wins"] %>
                   <span class="text-green-400"> W</span>
                 </td>
                 <td class="pr-2 text-right text-sm text-gray-100 md:pr-4">
-                  <%= entry.losses %>
+                  <%= entry["losses"] %>
                   <span class="text-red-400"> L</span>
                 </td>
                 <td class="pr-2 text-right text-sm text-gray-100 md:pr-4">
-                  <%= number_to_percentage(entry.win_rate, precision: 0) %>
+                  <%= number_to_percentage(entry["win_rate"], precision: 0) %>
                 </td>
               </tr>
             <% end %>

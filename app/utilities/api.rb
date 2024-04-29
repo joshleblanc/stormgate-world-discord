@@ -1,53 +1,62 @@
 module Utilities
     class Api 
-        URL = "https://api.stormgateworld.com/v0"
+        URL = "https://api.stormgate.untapped.gg"
+
+        def client(params = {})
+            Faraday.new({
+                url: URL,
+                params:,
+
+            }) do |builder|
+                builder.request :json
+                builder.response :json
+            end
+        end
 
         def leaderboard(**kwargs)
-            leaderboard_api = StormgateWorld::LeaderboardsApi.new
-            leaderboard_api.get_leaderboard(kwargs)
+            count = kwargs.delete(:count)
+            page = kwargs.delete(:page)
+            sort = kwargs.delete(:sort)
+            race = kwargs.delete(:race)
+
+            response = client(kwargs.merge(match_mode: "ranked_1v1")).get("/api/v1/leaderboard").body
+            response = response.drop(page * count) if page && count && count > 0
+            response = response.take(count) if count && count > 0
+            response.sort_by! { _1[sort.to_s] } if sort
+            response.select! { _1["race"] == race } if race 
+
+            response
         end
 
         def ongoing 
-            matches_api = StormgateWorld::MatchesApi.new
-            matches = matches_api.get_matches(count: 0, page: 1, state: "ongoing")
-            matches.total
+            0
         end
 
         def infernal_players
-            leaderboard(count: 0, page: 1, race: "infernals").total
+            leaderboard(count: 0, page: 0, race: "infernals").count
         end
 
         def vanguard_players
-            leaderboard(count: 0, page: 1, race: "vanguard").total
+            leaderboard(count: 0, page: 0, race: "vanguard").count
         end
 
         def search(query)
-            response = leaderboard(count: 1, page: 1, order: :mmr, query:)
-            response.entries.first
+            response = client({ q: query }).get("/api/v1/players").body
+            response.sort_by { _1["mmr"] }.reverse.first
+        end
+
+        def lookup(id)
+            client.get("/api/v1/players/#{id}").body
         end
 
         def find_player(query)
-            players_api = StormgateWorld::PlayersApi.new
-
-            player = if query.size == 6
-                begin 
-                    players_api.get_player(query) 
-                rescue 
-                    nil
-                end
+            player = if query.size == 7
+                lookup(query)
             end
                 
             return player if player 
 
-            result = search(query)
-            
-            players_api.get_player(result.player_id) if result
-        end
-
-        def last(player_id:)
-            players_api = StormgateWorld::PlayersApi.new
-
-            players_api.get_player_last_match(player_id)
+            search(query)
         end
     end
 end

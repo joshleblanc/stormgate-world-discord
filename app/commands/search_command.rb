@@ -8,16 +8,18 @@ module Commands
 
             query = args.join(' ')
 
-            player_api = StormgateWorld::PlayersApi.new
             api = Utilities::Api.new
 
             player = api.find_player(query)
 
-            return "No player found for #{query}" unless player
+            return "No player found for #{query}" if !player || player["detail"] == "Not found."
             
             attachments = []
             
-            threads = player.leaderboard_entries.map do |entry|
+            threads = player["ranks"]["ranked_1v1"].map do |race, entry|
+                entry["race"] = race
+                entry["win_rate"] = (entry["wins"].to_f / (entry["wins"] + entry["losses"])) * 100
+
                 Thread.new do 
                     send_html(event, render("profile_card", {
                         entry:, player:

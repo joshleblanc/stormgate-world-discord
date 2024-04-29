@@ -26,9 +26,6 @@ include Utilities::Helpers
 
 CACHE = ActiveSupport::Cache::MemoryStore.new
 
-INF_URL = "https://stormgateworld.com/_astro/infernals-small-glow.jbWP777a.png"
-VG_URL = "https://stormgateworld.com/_astro/vanguard-small-glow.NsCUjSZx.png"
-
 BOT = Discordrb::Commands::CommandBot.new token: ENV.fetch("TOKEN"), client_id: ENV.fetch("CLIENT_ID"), prefix: ENV.fetch("PREFIX"), intents: [:server_messages, :server_message_reactions]
 puts "This bot's invite URL is #{BOT.invite_url}"
 puts 'Click on it to invite it to your server.'

@@ -17,60 +17,56 @@
   }
 </style>
 <body>
-  <div class="container <%= entry.race %>">
+  <div class="container <%= entry["race"] %>">
     <div class="body">
-      <div class="faction <%= entry.race %>">
-        <img src="<%= faction_icon(entry.race) %>">
-        <span><%= player.nickname %></span>
+      <div class="faction <%= entry["race"] %>">
+        <img src="<%= faction_icon(entry["race"]) %>">
+        <span><%= player["playerName"] %></span>
       </div>
-      <div class="league <%= entry.race %>">
-        <img class="league-icon <%= entry.race %>" src="<%= league_icon(entry.league, entry.tier) %>">
+      <div class="league <%= entry["race"] %>">
+        <img class="league-icon <%= entry["race"] %>" src="<%= league_icon(entry["league"], entry["tier"]) %>">
         <div class="league-details">
           <div class="info">
-            <div class="header">Rank</div>
-            <div># <%= entry.rank || 0 %></div>
-          </div>
-          <div class="info">
             <div class="header">Points</div>
-            <div><%= entry.points&.floor || 0 %></div>
+            <div><%= entry["points"]&.floor || 0 %></div>
           </div>
           <div class="info">
             <div class="header">League</div>
-            <% if entry.league %>
-              <div><%= entry.league&.titleize %> <%= entry.tier %></div>
+            <% if entry["league"] %>
+              <div><%= entry["league"]&.titleize %> <%= entry["tier"] %></div>
             <% else %>
               <div>Unknown</div>
             <% end %>
           </div>
         </div>
       </div>
-      <div class="stats <%= entry.race %>">
+      <div class="stats <%= entry["race"] %>">
         <div class="info">
           <div class="header">MMR</div>
-          <div><%= entry.mmr&.floor %></div>
+          <div><%= entry["mmr"]&.floor %></div>
         </div>
         <div class="info">
           <div class="header">Win Rate</div>
-          <div><%= number_with_precision(entry.win_rate, precision: 2) %>%</div>
+          <div><%= number_with_precision(entry["win_rate"], precision: 2) %>%</div>
         </div>
         <div class="info win-loss">
           <div class="win-loss-text">
             <div class="wins">
-              <%= entry.wins %>
+              <%= entry["wins"] %>
             </div>
             -
             <div class="losses">
-              <%= entry.losses %>
+              <%= entry["losses"] %>
             </div>
           </div>
           <div class="bar">
-            <div class="win-bar" style="width: <%= number_with_precision(entry.win_rate, precision: 2) %>%"></div>
-            <div class="loss-bar" style="width: <%= number_with_precision(100 - entry.win_rate, precision: 2) %>%"></div>
+            <div class="win-bar" style="width: <%= number_with_precision(entry["win_rate"], precision: 2) %>%"></div>
+            <div class="loss-bar" style="width: <%= number_with_precision(100 - entry["win_rate"], precision: 2) %>%"></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="accent <%= entry.race %>">
+    <div class="accent <%= entry["race"] %>">
     </div>
   </div>
 </body>

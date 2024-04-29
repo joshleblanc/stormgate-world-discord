@@ -3,45 +3,60 @@ module Utilities
         include Discordrb::Webhooks
         include ActiveSupport::NumberHelper
 
+        def self.image_to_data_uri(path)
+            data = File.read(path, binary: true)
+            "data:image/png;base64,#{Base64.encode64(data)}"
+        end
+
+        INF_URL = image_to_data_uri("app/assets/race_icons/infernals-small-glow.png")
+        VG_URL = image_to_data_uri("app/assets/race_icons/vanguard-small-glow.png")
+
+
         VALID_LEAGUES = [
             "master", "diamond", "platinum", "gold", "silver", "bronze", "aspirant"
         ]
 
         LEAGUE_MAP = {
-            master: %w[
-                https://stormgateworld.com/_image?href=%2F_astro%2Fmaster-1.Upb0ETXP.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fmaster-2.lHM152kH.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fmaster-3.niUs3X95.png&f=webp
+            grandmaster: [
+                image_to_data_uri("app/assets/league_icons/grandmaster.png")
             ],
-            diamond: %w[
-                https://stormgateworld.com/_image?href=%2F_astro%2Fdiamond-1.I4IQBdkB.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fdiamond-2.e3mAoUDT.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fdiamond-3.EmclqKOy.png&f=webp
+            master: [
+                image_to_data_uri("app/assets/league_icons/master-1.png"),
+                image_to_data_uri("app/assets/league_icons/master-2.png"),
+                image_to_data_uri("app/assets/league_icons/master-3.png"),
             ],
-            platinum: %w[
-                https://stormgateworld.com/_image?href=%2F_astro%2Fplatinum-1.wRRkqm-M.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fplatinum-2.5SLnIxGC.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fplatinum-3._xtibM4l.png&f=webp
+            diamond: [
+                image_to_data_uri("app/assets/league_icons/diamond-1.png"),
+                image_to_data_uri("app/assets/league_icons/diamond-2.png"),
+                image_to_data_uri("app/assets/league_icons/diamond-3.png"),
             ],
-            gold: %w[
-                https://stormgateworld.com/_image?href=%2F_astro%2Fgold-1.57kCQZWY.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fgold-2.xHUHsFhT.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fgold-3.RQ0vpJ9c.png&f=webp
+            platinum: [
+                image_to_data_uri("app/assets/league_icons/platinum-1.png"),
+                image_to_data_uri("app/assets/league_icons/platinum-2.png"),
+                image_to_data_uri("app/assets/league_icons/platinum-3.png"),
             ],
-            silver: %w[
-                https://stormgateworld.com/_image?href=%2F_astro%2Fsilver-1.kPZ9adS2.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fsilver-2.84ZTx_eH.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fsilver-3.AMrt8hm_.png&f=webp
+            gold: [
+                image_to_data_uri("app/assets/league_icons/gold-1.png"),
+                image_to_data_uri("app/assets/league_icons/gold-2.png"),
+                image_to_data_uri("app/assets/league_icons/gold-3.png"),
             ],
-            bronze: %w[
-                https://stormgateworld.com/_image?href=%2F_astro%2Fbronze-1.9Sel4tuE.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fbronze-2.jkb7L-ym.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Fbronze-3.WWFlhd3O.png&f=webp
+            silver: [
+                image_to_data_uri("app/assets/league_icons/silver-1.png"),
+                image_to_data_uri("app/assets/league_icons/silver-2.png"),
+                image_to_data_uri("app/assets/league_icons/silver-3.png"),
             ],
-            aspirant: %w[
-                https://stormgateworld.com/_image?href=%2F_astro%2Faspirant-1.4t-uHZDX.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Faspirant-2.HZNpSbVW.png&f=webp
-                https://stormgateworld.com/_image?href=%2F_astro%2Faspirant-3.lDwWjEs4.png&f=webp
+            bronze: [
+                image_to_data_uri("app/assets/league_icons/bronze-1.png"),
+                image_to_data_uri("app/assets/league_icons/bronze-2.png"),
+                image_to_data_uri("app/assets/league_icons/bronze-3.png"),
+            ],
+            aspirant: [
+                image_to_data_uri("app/assets/league_icons/aspirant-1.png"),
+                image_to_data_uri("app/assets/league_icons/aspirant-2.png"),
+                image_to_data_uri("app/assets/league_icons/aspirant-3.png"),
+            ],
+            unranked: [
+                image_to_data_uri("app/assets/league_icons/unranked.png")
             ]
         }
 
@@ -58,7 +73,7 @@ module Utilities
 
             cached = CACHE.read(cache_key)
 
-           # return cached if cached 
+            return cached if cached 
 
             conn = Faraday.new(
                 url: "https://quickchart.io/chart",
@@ -84,7 +99,7 @@ module Utilities
         end
 
         def league_icon(league, tier)
-            return "https://stormgateworld.com/_image?href=%2F_astro%2Funranked.BrngpH03.png&f=webp" unless league
+            return LEAGUE_MAP[:unranked][0] unless league
             LEAGUE_MAP[league&.to_sym][tier.pred]
         end
         
@@ -130,13 +145,19 @@ module Utilities
 
             cached = CACHE.read(cache_key)
 
-            #return cached if cached 
+            return cached if cached 
 
-            output = Open3.capture3("node", "javascript/htmltoimage.js", html)
+            tmpfile = Tempfile.new
+            tmpfile.write(html)
+            tmpfile.close
+
+            output = Open3.capture3("node", "javascript/htmltoimage.js", tmpfile.path)
 
             output = output.first
 
             CACHE.write(cache_key, output)
+
+            tmpfile.unlink 
 
             output
         end
