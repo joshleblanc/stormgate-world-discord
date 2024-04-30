@@ -25,6 +25,30 @@
     border-left: 1px solid #350605;
 }
 
+.accent-no-image.infernals {
+    width: 20%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-size: 400%;
+    overflow: none;
+    border-radius: 0 9px 9px 0;
+    background-color: #1F0605;
+    background-position: 50% 50%;
+    border-left: 1px solid #350605;
+}
+
+.accent-no-image.vanguard {
+    width: 20%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-size: 400%;
+    overflow: none;
+    border-radius: 0 9px 9px 0;
+    background-color: #0E1024;
+    background-position: 40% 21%;
+    border-left: 1px solid #082048;
+}
+
 .faction>img {
     width: 30px;
     height: 30px;

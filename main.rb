@@ -76,4 +76,59 @@ BOT.ready do
     end
 end
 
+UNIT_DATA = {
+    "brute" => {
+        "cost" => {
+            "luminite" => "150",
+            "therium" => "0"
+        },
+        "hp" => "190",
+        "white health" => "45",
+        "supply" => "3",
+        "damage" => "30",
+        "range" => "0.5",
+        "attack speed" => "1.8",
+        "targets" => "ground",
+        "armor" => "0 (10)",
+        "move speed" => "3.8",
+        "race" => "infernals",
+        "name" => "Brute",
+        "image" => Utilities::Helpers.image_to_data_uri("app/assets/race_icons/infernals-banner.png")
+    }
+}
+BOT.message do |e|
+    message = e.message.content
+    match = message.match(/\[(.+)\]/)
+    next unless match 
+
+    name = match[1].downcase
+
+    data = UNIT_DATA[name]
+    e.send_embed do |embed|
+        embed.title = data["name"]
+        embed.color = data["race"] == "infernals" ? "#350605" : "#082048"
+        embed.description = "The Brute is a two-headed ogre-like creature. At the player's command, it can rip itself down the middle and cause two Fiends to emerge that will attack nearby enemies. The Brute can be upgraded so that this occurs automatically when it dies."
+        embed.fields = [
+            { name: "Luminite", value: data["cost"]["luminite"], inline: true },
+            { name: "Therium", value: data["cost"]["therium"], inline: true },
+            { name: "Supply", value: data["supply"], inline: true },
+            { name: "HP", value: "#{data["hp"]} (#{data["white health"]})", inline: true },
+            { name: "Damage", value: data["damage"], inline: true },
+            { name: "Range", value: data["range"], inline: true },
+            { name: "Attack Speed", value: data["attack speed"], inline: true },
+            { name: "Move Speed", value: data["move speed"], inline: true },
+            { name: "Armor", value: data["armor"], inline: true },
+            { name: "Targets", value: data['targets'], inline: true }
+        ]
+        embed.url = "https://stormgate.untapped.gg/"
+        embed.timestamp = Time.now
+        embed.footer = {
+            text: "infernals"
+        }
+        embed.image = {
+            url: "https://static.wikia.nocookie.net/stormgategame/images/9/9b/Brute_Head1.jpg/revision/latest?cb=20231222055947"
+        }
+    end
+end
+
 BOT.run
