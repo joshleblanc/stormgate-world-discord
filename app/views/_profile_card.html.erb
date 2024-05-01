@@ -67,6 +67,9 @@
       </div>
     </div>
     <div class="accent <%= entry["race"] %>">
+      <% if entry["race"] != "faction_3" %>
+        <img class="clipped" src="<%= Utilities::Helpers.image_to_data_uri("app/assets/race_icons/#{entry["race"]}-banner.png") %>">
+      <% end %>
     </div>
   </div>
 </body>

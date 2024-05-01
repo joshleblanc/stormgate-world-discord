@@ -10,7 +10,7 @@ module Utilities
 
         INF_URL = image_to_data_uri("app/assets/race_icons/infernals-small-glow.png")
         VG_URL = image_to_data_uri("app/assets/race_icons/vanguard-small-glow.png")
-
+        F3_URL = "data:image/webp;base64,UklGRnACAABXRUJQVlA4WAoAAAAQAAAAfwAAfwAAQUxQSLwBAAABkJftb9hGgiAGE4QwqBksDGIGKQOHQSB4DALBEAJBEAxB2+4uVmP//utzT0RMAL1zZZnCn8JweFr3Q+1qPY80CwgOezHvM4fhcSzVXqubjCwc1e6YZVC8nnbbLAPirdqddRnOVu3u+1iCWoenjIOz9akyiqDWq/IYNuu4jIC/rOvnAJJ1PvUXeiv9UenMQn+ht9IfVS/N6+fHB/3Jj5jVzUJ/yaPmhak5qtfeH9em8mDyTU7aH6VrNTH5Rx/j/uRKTUwvffqE/qj8qwi9urgsAwh/05leH1zSAKj8cTDdUT3yCFazutI986C46kQ3TYOiKNRRGsKN8e0en1gOjwmLehDUyRwLltUjYVGPCUo0RyWo6rFA2cxRCamYZ4KiHkpIN/NckDzNMxPQyTxVgIi6zIRT1DwT4WQ1z52AHuZ5EtDNPJWBRPNUIZyiHioEVM3xZAK6mWNhAirmmAmqOmSCGq09EVTWtkxYN2vOBFabTgYTrVWFwJYmIbBirSuhjS2Z4OYWwXM2ZILL1ih4poZMeOcGAbReKwQ4XVvgCbqT0GV4K7wHvAkeQZ7zxR3TW99ZXXck0Vzz//S8mQZWUDggjgAAADAKAJ0BKoAAgAA+USCNRCOiIRdPtAA4BQS0t3BgAAWO4OPt1giRe7uivyvZv53ZnNFocB1G2vx4uuSJsEEmyxsw5g8h0iDzjM4QpuCjXxMZKrk9COqi6rL8IAD+1c8nf//6gvWu9ov//UF4MHvvk7///0ONPaho///opRTDf//9FNT/5TgCd/+gRAAAAAA="
 
         VALID_LEAGUES = [
             "master", "diamond", "platinum", "gold", "silver", "bronze", "aspirant"
@@ -63,8 +63,10 @@ module Utilities
         def faction_icon(faction)
             if faction == "vanguard"
                 VG_URL
-            else
+            elsif faction == "infernals"
                 INF_URL
+            else
+                F3_URL
             end
         end
 
@@ -145,7 +147,7 @@ module Utilities
 
             cached = CACHE.read(cache_key)
 
-            return cached if cached 
+            #return cached if cached 
 
             tmpfile = Tempfile.new
             tmpfile.write(html)
