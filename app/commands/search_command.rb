@@ -13,6 +13,10 @@ module Commands
             player = api.find_player(query)
 
             return "No player found for #{query}" if !player || player["detail"] == "Not found."
+
+            if player["ranks"]["ranked_1v1"].nil?
+                return "No ranks found for #{player["playerName"]}"
+            end
             
             attachments = []
             
