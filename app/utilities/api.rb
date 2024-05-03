@@ -16,13 +16,13 @@ module Utilities
         def leaderboard(**kwargs)
             count = kwargs.delete(:count)
             page = kwargs.delete(:page)
-            sort = kwargs.delete(:sort)
+            sort = kwargs.delete(:order)
             race = kwargs.delete(:race)
 
             response = client(kwargs.merge(match_mode: "ranked_1v1")).get("/api/v1/leaderboard").body
+            response.sort_by! { _1[sort.to_s] }.reverse! if sort
             response = response.drop(page * count) if page && count && count > 0
             response = response.take(count) if count && count > 0
-            response.sort_by! { _1[sort.to_s] } if sort
             response.select! { _1["race"] == race } if race 
 
             response
