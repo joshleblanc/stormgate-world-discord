@@ -70,6 +70,16 @@ module Utilities
             end
         end
 
+        def faction_background(faction)
+            if faction == "vanguard"
+                "background-image: linear-gradient(to right, rgba(12, 116, 200, 0.376) 0%, rgba(12, 116, 200, 0.25) 8px, rgba(12, 116, 200, 0) 80px);"
+            elsif faction == "infernals"
+                "background-image: linear-gradient(to right, rgba(202, 59, 29, 0.376) 0%, rgba(202, 59, 29, 0.25) 8px, rgba(202, 59, 29, 0) 80px);"
+            else
+                "background-image: linear-gradient(to right, rgba(157, 157, 157, 0.376) 0%, rgba(157, 157, 157, 0.25) 8px, rgba(157, 157, 157, 0) 80px);"
+            end
+        end
+
         def fetch_chart(config)
             cache_key = "chart/#{config}"
 
