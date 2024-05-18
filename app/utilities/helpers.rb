@@ -110,6 +110,12 @@ module Utilities
             data
         end
 
+        def win_rate(entry)
+            total = entry["wins"] + entry["ties"] + entry["losses"]
+            ratio = entry["wins"].to_f / total
+            number_to_percentage(ratio * 100, precision: 0)
+        end
+
         def league_icon(league, tier)
             return LEAGUE_MAP[:unranked][0] unless league
             LEAGUE_MAP[league&.to_sym][tier.pred]
