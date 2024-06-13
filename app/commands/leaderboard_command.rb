@@ -12,6 +12,7 @@ module Commands
 
             output = render("leaderboard", {
                 json:,
+                description: "Top 10 players"
             })
             
             send_html event, output

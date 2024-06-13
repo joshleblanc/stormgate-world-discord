@@ -103,7 +103,7 @@
 }
 
 .faction.faction_3 {
-    background: linear-gradient(#051706, #0e240f);
+    background: linear-gradient(rgb(100, 34, 126), rgb(71, 24, 90));
 }
 
 .win-loss {
@@ -164,7 +164,7 @@
 }
 
 .stats.faction_3 {
-    background: linear-gradient(#042607, #061f06);
+    background: linear-gradient(rgb(100, 34, 126), rgb(71, 24, 90));
 }
 
 .header {

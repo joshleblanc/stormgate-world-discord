@@ -19,21 +19,20 @@ module Commands
             end
             
             attachments = []
-            
-            threads = player["ranks"]["ranked_1v1"].map do |race, entry|
-                entry["race"] = race
-                entry["win_rate"] = (entry["wins"].to_f / (entry["wins"] + entry["losses"])) * 100
 
-                Thread.new do 
-                    send_html(event, render("profile_card", {
-                        entry:, player:
-                    }))
-                end
+            
+            data = player["ranks"]["ranked_1v1"]
+            
+            json = []
+            data.each do |k, v|
+                v["race"] = k
+                v["playerName"] = player["playerName"]
+                json.push v
             end
 
-            threads.each(&:join)
-            
-            nil
+            json.sort_by! { _1["points"] }.reverse!
+
+            send_html event, render("leaderboard", { json:, description: player["playerName"] })
         end
     end
 end
