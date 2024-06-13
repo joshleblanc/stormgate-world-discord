@@ -8,10 +8,10 @@ module Utilities
             "data:image/png;base64,#{Base64.encode64(data)}"
         end
 
-        INF_URL = image_to_data_uri("app/assets/race_icons/infernals-small-glow.png")
-        VG_URL = image_to_data_uri("app/assets/race_icons/vanguard-small-glow.png")
-        F3_URL = "data:image/webp;base64,UklGRnACAABXRUJQVlA4WAoAAAAQAAAAfwAAfwAAQUxQSLwBAAABkJftb9hGgiAGE4QwqBksDGIGKQOHQSB4DALBEAJBEAxB2+4uVmP//utzT0RMAL1zZZnCn8JweFr3Q+1qPY80CwgOezHvM4fhcSzVXqubjCwc1e6YZVC8nnbbLAPirdqddRnOVu3u+1iCWoenjIOz9akyiqDWq/IYNuu4jIC/rOvnAJJ1PvUXeiv9UenMQn+ht9IfVS/N6+fHB/3Jj5jVzUJ/yaPmhak5qtfeH9em8mDyTU7aH6VrNTH5Rx/j/uRKTUwvffqE/qj8qwi9urgsAwh/05leH1zSAKj8cTDdUT3yCFazutI986C46kQ3TYOiKNRRGsKN8e0en1gOjwmLehDUyRwLltUjYVGPCUo0RyWo6rFA2cxRCamYZ4KiHkpIN/NckDzNMxPQyTxVgIi6zIRT1DwT4WQ1z52AHuZ5EtDNPJWBRPNUIZyiHioEVM3xZAK6mWNhAirmmAmqOmSCGq09EVTWtkxYN2vOBFabTgYTrVWFwJYmIbBirSuhjS2Z4OYWwXM2ZILL1ih4poZMeOcGAbReKwQ4XVvgCbqT0GV4K7wHvAkeQZ7zxR3TW99ZXXck0Vzz//S8mQZWUDggjgAAADAKAJ0BKoAAgAA+USCNRCOiIRdPtAA4BQS0t3BgAAWO4OPt1giRe7uivyvZv53ZnNFocB1G2vx4uuSJsEEmyxsw5g8h0iDzjM4QpuCjXxMZKrk9COqi6rL8IAD+1c8nf//6gvWu9ov//UF4MHvvk7///0ONPaho///opRTDf//9FNT/5TgCd/+gRAAAAAA="
-
+        INF_URL = image_to_data_uri("app/assets/race_icons/infernals-solid.png")
+        VG_URL = image_to_data_uri("app/assets/race_icons/vanguard-solid.png")
+        F3_URL = image_to_data_uri("app/assets/race_icons/celestials-solid.png")
+        
         VALID_LEAGUES = [
             "master", "diamond", "platinum", "gold", "silver", "bronze", "aspirant"
         ]
@@ -72,11 +72,11 @@ module Utilities
 
         def faction_background(faction)
             if faction == "vanguard"
-                "background-image: linear-gradient(to right, rgba(12, 116, 200, 0.376) 0%, rgba(12, 116, 200, 0.25) 8px, rgba(12, 116, 200, 0) 80px);"
+                "border-left: 2px solid rgb(12, 116, 200); background-image: linear-gradient(to right, rgba(12, 116, 200, 0.376) 0%, rgba(12, 116, 200, 0.25) 8px, rgba(12, 116, 200, 0) 80px);"
             elsif faction == "infernals"
-                "background-image: linear-gradient(to right, rgba(202, 59, 29, 0.376) 0%, rgba(202, 59, 29, 0.25) 8px, rgba(202, 59, 29, 0) 80px);"
+                "border-left: 2px solid rgb(202, 59, 29); background-image: linear-gradient(to right, rgba(202, 59, 29, 0.376) 0%, rgba(202, 59, 29, 0.25) 8px, rgba(202, 59, 29, 0) 80px);"
             else
-                "background-image: linear-gradient(to right, rgba(157, 157, 157, 0.376) 0%, rgba(157, 157, 157, 0.25) 8px, rgba(157, 157, 157, 0) 80px);"
+                "border-left: 2px solid rgb(140, 48, 175); background-image: linear-gradient(to right, rgba(140, 48, 175, 0.376) 0%, rgba(140, 48, 175, 0.25) 8px, rgba(140, 48, 175, 0) 80px);"
             end
         end
 

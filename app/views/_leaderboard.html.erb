@@ -21,7 +21,7 @@
               <span class="truncate font-bold"><%= i.next %></span>
             </div>
             <div class="flex h-10 items-center justify-start gap-2 border-l-2 border-solid border-neutral-400 bg-no-repeat px-2 py-0" style="<%= faction_background(entry["race"]) %>">
-              <img class="h-3/4" src="<%= faction_icon(entry["race"]) %>">
+              <img class="h-3/4" src="<%= faction_icon(entry["race"]) %>" style="filter: drop-shadow(rgba(0, 0, 0, 0.533) 0px 0px 2px);">
               <span class="truncate"><%= entry["playerName"] %></span>
             </div>
             <div class="mx-auto my-0 flex h-10 items-center justify-center gap-1 px-1 py-0">
