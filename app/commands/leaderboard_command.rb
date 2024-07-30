@@ -4,6 +4,8 @@ module Commands
     include Utilities::Helpers
 
     command :leaderboard, description: "Returns the top 10 players on the 1v1 ranked ladder" do |event, page|
+      event.channel.start_typing
+
       api = Utilities::Api.new
 
       page = [0, page.to_i].max || 0
