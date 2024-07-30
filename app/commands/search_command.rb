@@ -30,7 +30,7 @@ module Commands
                 json.push v
             end
 
-            json.sort_by! { _1["points"] }.reverse!
+            json.sort_by! { _1["points"] || 0 }.reverse!
 
             send_html event, render("leaderboard", { json:, description: player["playerName"] })
         end
