@@ -7,42 +7,45 @@
         <label class="text-sm text-slate-400"><%= description %></label>
       </header>
       <div class="flex flex-wrap px-6 pt-6" style="">
-        <div style="grid-template-columns: 0.5fr 35% 2fr 1.5fr 2fr 1fr; background-image: linear-gradient(transparent 24px, rgba(255, 255, 255, 0.2) 24px);" class="grid min-w-full gap-px overflow-y-hidden p-px">
-          <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;"></label>
-          <label style="justify-content: start; padding-left: 8px; align-items: start;" class="flex h-5 pl-2 text-sm text-slate-400">Player</label>
-          <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">Points</label>
-          <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">MMR</label>
-          <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">Stats</label>
-          <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">Winrate</label>
-        </div>
-        <div style="grid-template-columns: 0.5fr 35% 2fr 1.5fr 2fr 1fr; rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;" class="min-w-full gap-px p-px relative col-span-full grid gap-0 bg-zinc-900">
-          <% json.each_with_index do |entry, i| %>
-            <div class="flex h-10 items-center justify-center bg-white bg-opacity-[0.05] px-1 py-0" style="min-width: 40px; font-weight: bold;">
-              <span class="truncate font-bold"><%= i.next %></span>
-            </div>
-            <div class="flex h-10 items-center justify-start gap-2 border-l-2 border-solid border-neutral-400 bg-no-repeat px-2 py-0" style="<%= faction_background(entry["race"]) %>">
-              <img class="h-3/4" src="<%= faction_icon(entry["race"]) %>" style="filter: drop-shadow(rgba(0, 0, 0, 0.533) 0px 0px 2px);">
-              <span class="truncate"><%= entry["playerName"] %></span>
-            </div>
-            <div class="mx-auto my-0 flex h-10 items-center justify-center gap-1 px-1 py-0">
-              <img class="h-3/4 drop-shadow-sm" src="<%= league_icon(entry["league"], entry["tier"]) %>">
-              <span class="truncate"><%= entry["points"].to_i %></span>
-            </div>
-            <div class="flex h-10 items-center justify-center px-1 py-0">
-              <span class="truncate"><%= entry["mmr"].to_i %></span>
-            </div>
-            <div class="flex h-10 items-center justify-center gap-1 px-1 py-0">
-              <span style="color: rgb(63, 197, 63);" class="truncate text-green-500"><%= entry["wins"]%></span>
-              –
-              <span style="color: rgb(234, 85, 65);" class="truncate text-red-500"><%= entry["losses"] %></span>
-            </div>
-            <div class="flex h-10 items-center justify-center px-1 py-0">
-              <span class="truncate"><%= win_rate(entry) %></span>
-            </div>
-          <% end %>
-        </div>
+        <% if json.empty? %>
+          <h2 class="m-0 text-xl font-bold leading-5 text-gray-200">No results found for <%= query %></h2>
+        <% else %>
+          <div style="grid-template-columns: 0.5fr 35% 2fr 1.5fr 2fr 1fr; background-image: linear-gradient(transparent 24px, rgba(255, 255, 255, 0.2) 24px);" class="grid min-w-full gap-px overflow-y-hidden p-px">
+            <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;"></label>
+            <label style="justify-content: start; padding-left: 8px; align-items: start;" class="flex h-5 pl-2 text-sm text-slate-400">Player</label>
+            <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">Points</label>
+            <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">MMR</label>
+            <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">Stats</label>
+            <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">Winrate</label>
+          </div>
+          <div style="grid-template-columns: 0.5fr 35% 2fr 1.5fr 2fr 1fr; rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;" class="min-w-full gap-px p-px relative col-span-full grid gap-0 bg-zinc-900">
+            <% json.each_with_index do |entry, i| %>
+              <div class="flex h-10 items-center justify-center bg-white bg-opacity-[0.05] px-1 py-0" style="min-width: 40px; font-weight: bold;">
+                <span class="truncate font-bold"><%= i.next %></span>
+              </div>
+              <div class="flex h-10 items-center justify-start gap-2 border-l-2 border-solid border-neutral-400 bg-no-repeat px-2 py-0" style="<%= faction_background(entry["race"]) %>">
+                <img class="h-3/4" src="<%= faction_icon(entry["race"]) %>" style="filter: drop-shadow(rgba(0, 0, 0, 0.533) 0px 0px 2px);">
+                <span class="truncate"><%= entry["playerName"] %></span>
+              </div>
+              <div class="mx-auto my-0 flex h-10 items-center justify-center gap-1 px-1 py-0">
+                <img class="h-3/4 drop-shadow-sm" src="<%= league_icon(entry["league"], entry["tier"]) %>">
+                <span class="truncate"><%= entry["points"].to_i %></span>
+              </div>
+              <div class="flex h-10 items-center justify-center px-1 py-0">
+                <span class="truncate"><%= entry["mmr"].to_i %></span>
+              </div>
+              <div class="flex h-10 items-center justify-center gap-1 px-1 py-0">
+                <span style="color: rgb(63, 197, 63);" class="truncate text-green-500"><%= entry["wins"]%></span>
+                –
+                <span style="color: rgb(234, 85, 65);" class="truncate text-red-500"><%= entry["losses"] %></span>
+              </div>
+              <div class="flex h-10 items-center justify-center px-1 py-0">
+                <span class="truncate"><%= win_rate(entry) %></span>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
       </div>
-      
     </section>
   </section>
 </body>
