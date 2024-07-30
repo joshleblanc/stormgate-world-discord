@@ -112,8 +112,12 @@ module Utilities
 
     def win_rate(entry)
       total = entry["wins"].to_i + entry["ties"].to_i + entry["losses"].to_i
-      ratio = entry["wins"].to_f / total
-      number_to_percentage(ratio * 100, precision: 0)
+      if total == 0
+        "0%"
+      else
+        ratio = entry["wins"].to_f / total
+        number_to_percentage(ratio.to_f * 100, precision: 0)
+      end
     end
 
     def league_icon(league, tier)
