@@ -167,7 +167,7 @@ module Utilities
 
       cached = CACHE.read(cache_key)
 
-      #return cached if cached
+      return cached if cached
 
       tmpfile = Tempfile.new
       tmpfile.write(html)

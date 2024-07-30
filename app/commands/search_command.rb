@@ -18,8 +18,6 @@ module Commands
         return "No ranks found for #{player["playerName"]}"
       end
 
-      attachments = []
-
       data = player["ranks"]["ranked_1v1"]
 
       json = []
