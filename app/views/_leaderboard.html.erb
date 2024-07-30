@@ -26,10 +26,10 @@
             </div>
             <div class="mx-auto my-0 flex h-10 items-center justify-center gap-1 px-1 py-0">
               <img class="h-3/4 drop-shadow-sm" src="<%= league_icon(entry["league"], entry["tier"]) %>">
-              <span class="truncate"><%= entry["points"]&.floor || 0 %></span>
+              <span class="truncate"><%= entry["points"].to_i %></span>
             </div>
             <div class="flex h-10 items-center justify-center px-1 py-0">
-              <span class="truncate"><%= entry["mmr"]&.floor || 0 %></span>
+              <span class="truncate"><%= entry["mmr"].to_i %></span>
             </div>
             <div class="flex h-10 items-center justify-center gap-1 px-1 py-0">
               <span style="color: rgb(63, 197, 63);" class="truncate text-green-500"><%= entry["wins"]%></span>

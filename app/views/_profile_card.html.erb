@@ -28,7 +28,7 @@
         <div class="league-details">
           <div class="info">
             <div class="header">Points</div>
-            <div><%= entry["points"]&.floor || 0 %></div>
+            <div><%= entry["points"].to_i %></div>
           </div>
           <div class="info">
             <div class="header">League</div>
