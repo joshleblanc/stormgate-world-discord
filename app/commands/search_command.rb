@@ -17,10 +17,10 @@ module Commands
       json = []
 
       players.each do |player|
-        if player && player["ranks"]["ranked_1v1"].nil?
+        if player && player.dig("ranks")&.dig("ranked_1v1").nil?
           # event << "No ranks found for #{player["playerName"]}"
         elsif player
-          data = player["ranks"]["ranked_1v1"]
+          data = player.dig("ranks")&.dig("ranked_1v1") || []
           data.each do |k, v|
             v["race"] = k
             v["playerName"] = player["playerName"]
