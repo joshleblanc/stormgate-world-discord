@@ -50,8 +50,8 @@ module Utilities
         end
 
         def find_player(query)
-            player = if query.size == 7
-                lookup(query)
+            player = if query.size == 8 && query.start_with?("#")
+                lookup(query[1..-1])
             end
                 
             return player if player 
