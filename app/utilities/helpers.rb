@@ -162,6 +162,13 @@ module Utilities
       Utilities::Renderer.instance.render(...)
     end
 
+    def duration_string(duration)
+      minutes = (duration / 60).floor
+      seconds = duration % 60
+
+      "#{minutes.to_s.rjust(2, "0")}:#{seconds.to_s.rjust(2, "0")}" 
+    end
+
     def generate_image(html)
       cache_key = Base64.encode64("image-generation/#{html}")
 

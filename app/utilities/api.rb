@@ -58,5 +58,17 @@ module Utilities
 
             search(query)
         end
+
+        def match_history(profile_id)
+            response = client.get("/api/v2/matches/players/#{profile_id}/recent/ranked_1v1?season=current").body
+            
+            matches = []
+            matches.concat(response["vanguard"] || [])
+            matches.concat(response["infernals"] || [])
+            matches.concat(response["celestials"] || [])
+            
+            matches.sort_by! { |match| -match["match_start"] }
+            matches.take(10)
+        end
     end
 end

@@ -1,0 +1,101 @@
+<%= render "head" %>
+<body style="height: <%= (matches.size * 43) + 120 %>px">
+  <section class="flex min-h-screen flex-1 flex-col gap-8 text-gray-300">
+    <section class="z-0 flex w-full flex-1 flex-col gap-px rounded-lg p-px drop-shadow-lg" style="background-image: linear-gradient(rgb(53, 71, 85) 0%, rgb(96, 123, 130) 100%)">
+      <header class="flex items-center justify-between bg-gray-800 px-6 py-4">
+        <h2 class="m-0 text-xl font-bold leading-5 text-gray-200">MATCH HISTORY</h2>
+        <label class="text-sm text-slate-400"><%= player["playerName"] %></label>
+      </header>
+      <div class="flex flex-wrap px-6 pt-6" style="">
+        <% if matches.empty? %>
+          <h2 class="m-0 text-xl font-bold leading-5 text-gray-200">No results found for <%= query %></h2>
+        <% else %>
+          <section
+            class="flex z-0 flex-col gap-px w-full text-gray-300 rounded-lg"
+          >
+            <div class="px-6 pt-3 pb-6 text-gray-300 border-t border-white border-solid">
+              <div class="overflow-x-auto flex-col min-w-full">
+                <div style="grid-template-columns: 60px 25px 2fr 1.5fr 1fr 1fr 150px;" class="grid min-w-full overflow-y-hidden">
+                  <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">Result</label>
+                  <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;"></label>
+                  <label class="flex h-5 text-sm text-slate-400" style="align-items: start; padding-left: 8px;">Opponent</label>
+                  <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">Points</label>
+                  <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">MMR</label>
+                  <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">Dur.</label>
+                  <label class="flex h-5 justify-center text-sm text-slate-400" style="align-items: start;">Time</label>
+                </div>
+                <div style="grid-template-columns: 60px 25px 2fr 1.5fr 1fr 1fr 150px;" class="grid min-w-full bg-white bg-opacity-[0.2]">
+                  <% matches.each do |match| %>
+                    <% players = match["players"].group_by { |p| p["profile_id"] == player["profileId"] } %>
+                    <% entry = players[true].first %>
+                    <% opponent = players[false].first %>
+                    <div class="flex justify-center items-center bg-zinc-900 h-10">
+                      <% if entry["outcome"] == "win" %>
+                        <div class="font-bold text-green-500 truncate">WIN</div>
+                      <% else %>
+                        <div class="font-bold text-red-500 truncate">LOSS</div>
+                      <% end %>
+                    </div>
+                    <div class="flex justify-center items-center bg-zinc-900 h-10">vs.</div>
+                    <div class="flex items-center bg-zinc-900 h-10">
+                      <div class="inline">
+                        <div class="flex h-10 gap-1 items-center">
+                          <img
+                            src="<%= faction_icon(opponent["race"])%>"
+                            class="h-3/4"
+                            style="filter: drop-shadow(rgba(0, 0, 0, 0.533) 0px 0px 2px);"
+                          />
+                          <div class="cursor-pointer truncate" style="max-width: 200px;">
+                            <%= opponent["player_name"] %>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flex justify-center items-center bg-zinc-900 h-10">
+                        <div class="flex gap-1 items-center">
+                          <img
+                          src="<%= league_icon(entry["league"], entry["tier"]) %>"
+                          width="32"
+                          height="32"
+                        />
+                        <%= entry["previous_ranking"]["points"]%>
+                        
+                        <span
+                          style="color: rgb(174, 180, 184); min-width: 30px; opacity: 1;"
+                          class="text-gray-400 opacity-100 truncate"
+                        >
+                            <% diff = entry["updated_ranking"]["points"] - entry["previous_ranking"]["points"] %>
+                            <% if diff >= 0 %>+<% end %><%= diff %>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="flex justify-center items-center bg-zinc-900 h-10">
+                        <div class="flex gap-1">
+                          <%= entry["previous_ranking"]["mmr"]%>
+                          <span
+                            style="color: rgb(174, 180, 184); min-width: 30px; opacity: 1;"
+                            class="text-gray-400 opacity-100 truncate"
+                          >
+                            <% diff = entry["updated_ranking"]["mmr"] - entry["previous_ranking"]["mmr"] %>
+                            <% if diff >= 0 %>+<% end %><%= diff %>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="flex justify-center items-center bg-zinc-900 h-10">
+                        <%= duration_string(match["match_active_seconds"]) %>
+                      </div>
+                      <div class="flex justify-center items-center bg-zinc-900 h-10">
+                        <span class="truncate">
+                          <%= Time.at(match["match_start"]).strftime("%F %R") %>
+                        </span>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </section>
+          <% end %>
+        </div>
+      </section>
+    </section>
+  </body>
