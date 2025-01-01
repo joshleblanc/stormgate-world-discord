@@ -26,6 +26,7 @@ module Commands
       output = render("match_history", {
         matches:,
         player:,
+        query:
       })
 
       send_html event, output
