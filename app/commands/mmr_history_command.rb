@@ -30,6 +30,8 @@ module Commands
 
       max_games = stats.values.map { |s| s["recent_mmr_history"].size }.max
 
+      p player
+
       stats.each do |faction, faction_stats|
         mmr_history = faction_stats["recent_mmr_history"]
         datasets << {

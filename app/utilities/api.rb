@@ -42,7 +42,7 @@ module Utilities
 
         def search(query)
             response = client({ q: query }).get("/api/v1/players").body
-            response.sort_by { _1["mmr"] }.reverse.first
+            response.sort_by { _1.dig("ranks", "ranked_1v1")&.values&.map { |v| v["mmr"] || 0 }&.max || 0 }.reverse.first
         end
 
         def lookup(id)
