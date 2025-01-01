@@ -70,5 +70,13 @@ module Utilities
             matches.sort_by! { |match| -match["match_start"] }
             matches.take(10)
         end
+
+        def player_stats(profile_id)
+            response = client.get("/api/v2/matches/players/#{profile_id}/stats/ranked_1v1?season=current").body
+            
+            # Remove any empty faction stats
+            response.delete_if { |_, stats| stats.empty? }
+            response["all"]
+        end
     end
 end
