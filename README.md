@@ -41,6 +41,25 @@ A very simple discord bot to query the stormgate api.
 
 !!activity <query> will return aggregate activity statistics for the player
 
-**Graph**
+**Graph Commands**
 
-!!graph <graph type> will return a graph for the given statistic
+The following graph commands are available to visualize player statistics:
+
+`!!mmr_history <query>` - Shows MMR history over time for each faction
+- Displays MMR trends for all factions the player has used
+- Each faction is shown in its distinct color (Vanguard: Blue, Infernals: Red, Celestials: Purple)
+
+`!!duration_stats <query>` - Shows win/loss distribution by game duration for each faction
+- Displays how many games were won/lost at each duration
+- Stacked bars show wins (darker) and losses (lighter) for each faction
+
+`!!race_stats <query>` - Shows win rates against each opponent race for each faction
+- Displays win rate percentages against different races
+- Each faction's performance is shown in its distinct color
+
+`!!map_stats <query>` - Shows win rates on different maps for each faction
+- Displays win rates for the top 10 most played maps
+- Each faction's performance is shown in its distinct color
+- Maps are sorted by total games played
+
+Note: If no stats are found or the account is private, the bot will let you know.
