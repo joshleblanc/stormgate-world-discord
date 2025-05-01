@@ -63,6 +63,53 @@ bob_voice_lines = [
   "I'm 50,000 times more intelligent than you, and even I don't know why you'd want to do that",
 ]
 
+REPLAY_REGEX = /steam:\/\/run\/2012510\/\/\?replay_url=(?<replay_url>.*\.SGReplay)/
+BOT.message do |event|
+  return if event.from_bot?
+
+  # Check if message content matches the regex
+  match_data = event.content.match(REPLAY_REGEX)
+  if match_data
+    replay_url = match_data[:replay_url]
+
+    # Decode the URL-encoded characters in the replay URL
+    decoded_url = URI.decode_www_form_component(replay_url)
+
+    # Create the launch link and download link
+    launch_link = Faraday.get("https://tinyurl.com/api-create.php?url=steam://run/2012510//?replay_url=#{decoded_url}").body
+    download_link = decoded_url
+
+    # Create and send an embed with the links
+    embed = Discordrb::Webhooks::Embed.new(
+      title: "Stormgate Replay",
+      description: "A Stormgate replay has been shared!",
+      color: 0x7289DA, # Discord blue color
+      footer: { text: "Shared by #{event.user.name}" },
+      timestamp: Time.now,
+    )
+
+    # Add fields for the links
+    embed.add_field(name: "🚀 Launch in Stormgate", value: "[Click to launch](#{launch_link})")
+    embed.add_field(name: "💾 Download Replay", value: "[Click to download](#{download_link})")
+
+    # Send the embed
+    event.channel.send_embed("", embed)
+
+    # Delete the original message if we have permission
+    bot_member = event.server.member(BOT.profile.id)
+    if bot_member.permission?(:manage_messages)
+      begin
+        event.message.delete
+      rescue => e
+        p "Failed to delete message: #{e.message}"
+      end
+    else
+      p "Bot does not have permission to delete messages in this channel"
+    end
+    nil
+  end
+end
+
 BOT.mention do |event|
   event.send_message bob_voice_lines.sample
 end
