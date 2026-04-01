@@ -7,7 +7,8 @@ async function toImage(filePath) {
     const html = fs.readFileSync(filePath, 'utf8');
     const image = await nodeHtmlToImage({
         html: html,
-        transparent: true
+        transparent: true,
+        puppeteerArgs: { args: ['--no-sandbox', '--disable-setuid-sandbox'] }
     });
 
     process.stdout.write(image);
