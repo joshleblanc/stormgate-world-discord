@@ -13,6 +13,9 @@ RUN apt-get update -qq && \
     libffi-dev \
     libmagickwand-dev \
     curl \
+    nodejs \
+    npm \
+    && npm install -g yarn \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -42,6 +45,9 @@ COPY . .
 # Generate bundle
 RUN bundle config set --local path 'vendor/bundle' && \
     bundle install --jobs 4 --retry 3
+
+# Install JS dependencies
+RUN yarn install
 
 # Final stage
 FROM base AS final
