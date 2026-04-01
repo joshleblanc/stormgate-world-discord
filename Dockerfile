@@ -47,7 +47,7 @@ RUN bundle config set --local path 'vendor/bundle' && \
     bundle install --jobs 4 --retry 3
 
 # Install JS dependencies
-RUN yarn install
+RUN yarn install --non-interactive
 
 # Final stage
 FROM base AS final
