@@ -65,32 +65,5 @@ ENV BUNDLE_DEPLOYMENT=1
 ENV BUNDLE_PATH="/app/vendor/bundle"
 ENV BUNDLE_WITHOUT="development:test"
 
-# Health check
-EXPOSE 3000
-
-# Health check endpoint (simple HTTP server for Kamal)
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:3000/health || exit 1
-
-# Start command - include a simple health server alongside the bot
-CMD bundle exec ruby -e "
-  require 'webrick'
-  server = WEBrick::HTTPServer.new({
-    Port: 3000,
-    Logger: WEBrick::Log.new('/dev/null'),
-    AccessLog: [[File.open('/dev/null', 'w'), WEBrick::AccessLog::COMMON_LOG_FORMAT]]
-  })
-  server.mount_proc '/health' do |req, res|
-    res['Content-Type'] = 'application/json'
-    res.status = 200
-    res.body = '{\"status\": \"ok\"}'
-  end
-  server.mount_proc '/' do |req, res|
-    res['Content-Type'] = 'text/plain'
-    res.body = 'Stormgate Discord Bot is running'
-  end
-  Thread.new { server.start }
-  trap('INT') { server.shutdown }
-  trap('TERM') { server.shutdown }
-  exec('bundle exec ruby main.rb')
-"
+# Start command
+CMD bundle exec ruby main.rb

@@ -20,11 +20,6 @@ env:
     - TOKEN
     - PREFIX
 
-# Healthcheck configuration
-healthcheck:
-  path: /health
-  port: 3000
-
 retain_containers: 1
 
 registry:
