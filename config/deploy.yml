@@ -4,68 +4,28 @@ service: stormgate-discord-bot
 
 # Server(s) to deploy to
 servers:
-  web:
-    hosts:
-      - 147.189.173.240
-    labels:
-      service: stormgate-discord-bot
+  - 147.189.173.240
 
 # Docker image
-image: ghcr.io/joshleblanc/stormgate-world-discord
+image: stormgate-world-discord
 
 # Build arguments and secrets
 builder:
-  args:
-    RUBY_VERSION: "3.3"
-  secrets:
-    - env
+  arch: amd64
 
 # Environment variables (loaded from .env on deploy machine)
 env:
   secret:
-    - env
-
-# Persistent volumes (bind mounts)
-volumes:
-  - /home/deploy/stormgate-discord-bot/data:/app/data
+    - CLIENT_ID
+    - TOKEN
+    - PREFIX
 
 # Healthcheck configuration
 healthcheck:
   path: /health
   port: 3000
 
-# Rolling restart (bot can restart without downtime concern)
-rolling: true
+retain_containers: 1
 
-# Asset pipeline (not needed for this bot, but required by Kamal)
-assets:
-  compiled:
-    # No assets for this bot
-  links: []
-
-# Registry authentication
 registry:
-  username: joshleblanc
-  token: github
-
-# Logging
-logging:
-  driver: json-file
-  options:
-    max-size: "10m"
-    max-file: "3"
-
-# Restart policy
-restart_policy:
-  name: always
-  max_reviews: 10
-
-# Accessory: persistent data directory
-accessories:
-  data:
-    service: data-volume
-    image: busybox
-    roles:
-      - web
-    volumes:
-      - /home/deploy/stormgate-discord-bot/data:/data
+  server: localhost:5555
