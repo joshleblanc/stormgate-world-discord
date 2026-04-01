@@ -6,7 +6,7 @@ service: stormgate-discord-bot
 servers:
   web:
     hosts:
-      - - 147.189.173.240
+      - 147.189.173.240
     proxy: false
   
 
