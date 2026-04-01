@@ -4,7 +4,11 @@ service: stormgate-discord-bot
 
 # Server(s) to deploy to
 servers:
-  - 147.189.173.240
+  web:
+    hosts:
+      - - 147.189.173.240
+    proxy: false
+  
 
 # Docker image
 image: stormgate-world-discord
