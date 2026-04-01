@@ -15,3 +15,5 @@ gem "erb", "~> 4.0"
 gem "zeitwerk", "~> 2.6"
 
 gem "actionview", "~> 7.1", require: 'action_view'
+
+gem "webrick", "~> 1.8"
